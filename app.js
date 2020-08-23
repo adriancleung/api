@@ -1,7 +1,10 @@
 const { google } = require('googleapis');
 const express = require('express');
+const morgan = require('morgan');
 const gmail = google.gmail('v1');
 const app = express();
+
+app.use(morgan('dev'));
 
 app.get('/', (req, res) => {
     res.send('Hello world!');

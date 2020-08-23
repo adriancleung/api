@@ -9,7 +9,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "debug": "^4.1.1",
     "express": "^4.17.1",
-    "googleapis": "^59.0.0"
+    "googleapis": "^59.0.0",
+    "morgan": "^1.10.0"
   }
 }
