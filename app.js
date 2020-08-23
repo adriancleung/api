@@ -11,6 +11,6 @@ app.get('/send', (req, res) => {
     res.send('Email sent');
 });
 
-app.listen(3000, () => {
-    console.log('Example app listening at http://localhost:3000');
+const listener = app.listen(process.env.PORT, () => {
+    console.log('Your app is listening on port ' + listener.address().port);
 });
