@@ -1,9 +1,12 @@
 const fs = require('fs');
+const util = require('util');
 const readline = require('readline');
 const { google } = require('googleapis');
 const express = require('express');
 const morgan = require('morgan');
 const app = express();
+
+const readFileContent = util.promisify(fs.readFile);
 
 const SCOPES = [
     'https://www.googleapis.com/auth/gmail.send'
@@ -11,6 +14,11 @@ const SCOPES = [
 
 const TOKEN_PATH = 'token.json';
 const CREDENTIALS_PATH = 'credentials.json';
+
+var firstName;
+var lastName;
+var email;
+var message;
 
 fs.writeFile(CREDENTIALS_PATH, process.env.credentials_json, (err) => {
     if (err) return console.error(err);
@@ -22,15 +30,18 @@ fs.writeFile(TOKEN_PATH, process.env.token_json, (err) => {
     console.log('Token stored to', TOKEN_PATH);
 })
 
-function authorize(credentials, callback) {
+async function authorize(credentials, callback) {
     const { client_secret, client_id, redirect_uris } = credentials.installed;
     const oAuth2Client = new google.auth.OAuth2(
         client_id, client_secret, redirect_uris[0]);
 
-    fs.readFile(TOKEN_PATH, (err, token) => {
-        if (err) return getNewToken(oAuth2Client, callback);
-        oAuth2Client.setCredentials(JSON.parse(token));
-        callback(oAuth2Client);
+    return await readFileContent(TOKEN_PATH)
+    .then(async buff => {
+        oAuth2Client.setCredentials(JSON.parse(buff));
+        return await callback(oAuth2Client);
+    })
+    .catch(err => {
+        return getNewToken(oAuth2Client, callback);
     });
 }
 
@@ -58,20 +69,28 @@ function getNewToken(oAuth2Client, callback) {
     });
 }
 
-function sendMail(auth) {
-    from = "From: Adrian Leung <leung.c.adrian@gmail.com>\n";
-    to = "To: Adrian Leung <leung.c.adrian@gmail.com>\n";
+async function sendMail(auth) {
+    from = "From:  Adrian Leung <leung.c.adrian@gmail.com>\n";
+    to = "To: Adrian Leung <adrian.leung@ualberta.ca>\n";
     subject = "Subject: Contact Form Submitted!\n\n";
-    body = "TEST";
+    body = firstName + " " + lastName + " (" + email + ") sent you a message:\n" + message;
     encoded = encode(from + to + subject + body);
     
     const gmail = google.gmail({version: "v1", auth});
-    gmail.users.messages.send({
+    const res = await gmail.users.messages.send({
         requestBody: {
             raw: encoded,
         },
         userId: "me",
     });
+
+    if (res.data.labelIds.includes('SENT')) {
+        console.log('Email sent!');
+        return 200;
+    } else {
+        console.error('ERROR: Email not sent!');
+        return 500;
+    }
 }
 
 function encode(unencoded) {
@@ -80,17 +99,34 @@ function encode(unencoded) {
 };
 
 app.use(morgan('dev'));
+app.use(express.urlencoded({extended: true}));
+
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', "https://adrianleung.dev");
+    next();
+});
 
 app.get('/', (req, res) => {
     res.send('Hello world!');
 });
 
 app.post('/send', (req, res) => {
-    fs.readFile('credentials.json', (err, content) => {
+    firstName = req.body.firstName;
+    lastName = req.body.lastName;
+    email = req.body.email;
+    message = req.body.message;
+
+    fs.readFile('credentials.json', async (err, content) => {
         if (err) return console.log('Error loading client secret file:', err);
-        authorize(JSON.parse(content), sendMail);
+        await authorize(JSON.parse(content), sendMail)
+        .then(statusCode => {
+            if (statusCode === 200) {
+                res.status(200).send();
+            } else {
+                res.status(500).send();
+            }
+        });
     });
-    res.send('Email sent');
 });
 
 const listener = app.listen(process.env.PORT, () => {
