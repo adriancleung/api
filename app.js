@@ -20,6 +20,10 @@ var firstName;
 var lastName;
 var email;
 var message;
+var corsOptions = {
+    origin: 'https://adrianleung.dev',
+    optionsSuccessStatus: 200
+}
 
 fs.writeFile(CREDENTIALS_PATH, process.env.credentials_json, (err) => {
     if (err) return console.error(err);
@@ -102,16 +106,11 @@ function encode(unencoded) {
 app.use(morgan('dev'));
 app.use(express.urlencoded({extended: true}));
 
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', "*");
-    next();
-});
-
 app.get('/', (req, res) => {
     res.send('Hello world!');
 });
 
-app.post('/send', cors(), (req, res) => {
+app.post('/send', cors(corsOptions), (req, res) => {
     firstName = req.body.firstName;
     lastName = req.body.lastName;
     email = req.body.email;
