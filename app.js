@@ -4,6 +4,7 @@ const readline = require('readline');
 const { google } = require('googleapis');
 const express = require('express');
 const morgan = require('morgan');
+const cors = require('cors');
 const app = express();
 
 const readFileContent = util.promisify(fs.readFile);
@@ -110,7 +111,7 @@ app.get('/', (req, res) => {
     res.send('Hello world!');
 });
 
-app.post('/send', (req, res) => {
+app.post('/send', cors(), (req, res) => {
     firstName = req.body.firstName;
     lastName = req.body.lastName;
     email = req.body.email;
