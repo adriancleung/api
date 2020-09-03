@@ -107,7 +107,7 @@ app.use(morgan('dev'));
 app.use(express.urlencoded({extended: true}));
 
 app.get('/', (req, res) => {
-    res.send('Hello world!');
+    res.redirect(301, 'https://adrianleung.dev');
 });
 
 app.post('/send', cors(corsOptions), (req, res) => {
