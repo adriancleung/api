@@ -21,7 +21,7 @@ var lastName;
 var email;
 var message;
 var corsOptions = {
-    origin: 'http://api.adrianleung.dev',
+    origin: 'https://adrianleung.dev',
     optionsSuccessStatus: 200
 }
 
