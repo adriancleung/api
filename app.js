@@ -75,11 +75,12 @@ function getNewToken(oAuth2Client, callback) {
 }
 
 async function sendMail(auth) {
-    from = "From:  Adrian Leung <leung.c.adrian@gmail.com>\n";
+    from = "From:  Contact - adrianleung.dev <contact@adrianleung.dev>\n";
+    replyTo = "Reply-To: " + firstName + " " + lastName + " <"+ email + ">\n";
     to = "To: Adrian Leung <adrian.leung@ualberta.ca>\n";
     subject = "Subject: Contact Form Submitted!\n\n";
-    body = firstName + " " + lastName + " (" + email + ") sent you a message:\n" + message;
-    encoded = encode(from + to + subject + body);
+    body = firstName + " " + lastName + " (" + email + ") sent you a message:\n\n" + message;
+    encoded = encode(from + replyTo + to + subject + body);
     
     const gmail = google.gmail({version: "v1", auth});
     const res = await gmail.users.messages.send({
