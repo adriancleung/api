@@ -9,6 +9,7 @@ services:
       - "8080:8080"
     volumes:
       - .:/data:cached
+      - ~/.gitconfig:/root/.gitconfig
       - /var/run/docker.sock:/var/run/docker.sock 
     command: /bin/sh -c "while sleep 1000; do :; done"
  
