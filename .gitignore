@@ -8,3 +8,4 @@ dev_firebase_service_account_key.json
 prod_firebase_service_account_key.json
 api.adrianleung.dev.cert
 api.adrianleung.dev.key
+*.log
