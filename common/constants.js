@@ -1,7 +1,7 @@
 const path = require('path');
 const SCOPES = ['https://www.googleapis.com/auth/gmail.send'];
 const CORS_OPTIONS = {
-  origin: 'https://adrianleung.dev',
+  origin: '*',
   optionsSuccessStatus: 200,
 };
 const SUCCESS_CODE = 200;
