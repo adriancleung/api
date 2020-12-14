@@ -7,21 +7,21 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Install modules",
-            "runtimeExecutable": "npm",
-            "runtimeArgs": ["install", "--save"],
-            "console": "internalConsole",
-            "internalConsoleOptions": "openOnSessionStart"
-        },
-        {
-            "type": "node",
-            "request": "launch",
             "name": "Launch Program",
             "skipFiles": [
                 "<node_internals>/**"
             ],
             "program": "${workspaceFolder}/app.js",
             "console": "integratedTerminal"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Install modules",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": ["install", "--save"],
+            "console": "internalConsole",
+            "internalConsoleOptions": "openOnSessionStart"
         }
     ]
 }
