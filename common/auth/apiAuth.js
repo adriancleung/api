@@ -2,7 +2,7 @@ const { SUCCESS_CODE, UNAUTHORIZED, SERVER_ERROR } = require('../constants');
 const { getApiKey } = require('../db/api');
 
 const validateAuth = (req, res, next) => {
-  if (req.secure && req.headers['x-api-key']) {
+  if (req.headers['x-api-key']) {
     getApiKey(req.headers['x-api-key'])
       .then(value => {
         if (value.statusCode === SUCCESS_CODE) {
