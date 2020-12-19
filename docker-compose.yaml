@@ -4,6 +4,7 @@ services:
     build: .
     environment:
       PORT: 3000
+      TZ: America/Edmonton
     ports:
       - "3000:3000"
       - "3443:3443"
