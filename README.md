@@ -1,10 +1,10 @@
 # api
-[![adriancleung-api version][version-image]](version-url)
+[![adriancleung-api version][version-image]][version-url]
 
 Backend code for my website and services
 
 ## Development
-This is a [Node.js](node-url) module available through cloning of this repository. The recommended
+This is a [Node.js][node-url] module available through cloning of this repository. The recommended
 development environment for this project is using dev containers.
 
 This project uses the following:
@@ -33,7 +33,7 @@ Grab the environment variables from `.env.TEMPLATE` and replace the values befor
 - `/status`
 
 ## Tasks
-Tasks can run at specific times based on [GNU crontab](crontab-url)
+Tasks can run at specific times based on [GNU crontab][crontab-url]
 
 ### Allowed fields
 
