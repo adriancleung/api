@@ -12,11 +12,13 @@ const SERVER_ERROR = 500;
 const SERVER_UNAVAILABLE = 503;
 
 const ROOT_DIR = path.dirname(require.main.filename || process.mainModule.filename);
+const TASKS_PATH = ROOT_DIR + '/tasks.yaml';
 
 module.exports = {
   SCOPES,
   CORS_OPTIONS,
   ROOT_DIR,
+  TASKS_PATH,
   SUCCESS_CODE,
   CLIENT_ERROR,
   UNAUTHORIZED,

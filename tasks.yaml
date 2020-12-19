@@ -1,0 +1,4 @@
+tasks:
+  ping_status:
+    module: common.tasks.status.handler.endpoint
+    schedule: '* * * * *'
