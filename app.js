@@ -8,6 +8,7 @@ const mail = require('./common/app/mail/route');
 const status = require('./common/app/status/route');
 const { validateAuth } = require('./common/auth/apiAuth');
 const { CORS_OPTIONS } = require('./common/constants');
+const initializeTasks = require('./common/tasks/init');
 
 app.use(helmet());
 app.use(cors(CORS_OPTIONS));
@@ -25,4 +26,7 @@ app.use('/status', status);
 
 const listener = app.listen(process.env.PORT, () => {
   console.log('Your app is listening on port ' + listener.address().port);
-})
+  initializeTasks();
+});
+
+module.exports = app;
