@@ -8,6 +8,7 @@ const api = require('./common/app/api/route');
 const mail = require('./common/app/mail/route');
 const status = require('./common/app/status/route');
 const brewCoffee = require('./common/app/brew-coffee/route');
+const resume = require('./common/app/resume/route');
 
 // Import Modules
 const { validateAuth } = require('./common/auth/apiAuth');
@@ -34,6 +35,7 @@ app.use('/mail', mail);
 app.use('/api', validateAuth, api);
 app.use('/status', status);
 app.use('/brew-coffee', brewCoffee);
+app.use('/resume', resume);
 
 const listener = app.listen(process.env.PORT, () => {
   console.info('Your app is listening on port ' + listener.address().port);
