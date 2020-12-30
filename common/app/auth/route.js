@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { RESOURCE_NOT_FOUND, FORBIDDEN } = require('../../constants');
-const { signup, login, verify } = require('../../auth/jwtAuth');
+const { signup, login, verifyJwt } = require('../../auth/jwtAuth');
 
 router.all('/', (req, res) => {
   return res.sendStatus(RESOURCE_NOT_FOUND);
@@ -13,7 +13,7 @@ router.post('/signup', (req, res) => {
 
 router.post('/login', (req, res) => {
   login(req.body.email, req.body.password).then(value => {
-    res.status(value.statusCode).json(value.body);
+    res.status(value.statusCode).send(value.body);
   });
 });
 
@@ -22,8 +22,7 @@ router.post('/verify', (req, res) => {
   if (!token) {
     res.status(FORBIDDEN).send({ message: 'No token provided' });
   }
-  const result = verify(token);
-  res.status(result.statusCode).json(result.body);
+  verifyJwt(token).then(value => res.status(value.statusCode).send(value.body));
 });
 
 module.exports = router;

@@ -1,12 +1,14 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const util = require('util');
 const {
   SUCCESS_CODE,
   UNAUTHORIZED,
-  FORBIDDEN,
   RESOURCE_NOT_FOUND,
 } = require('../constants');
 const { createUser, getUser } = require('../db/auth');
+
+const jwtVerifyPromise = util.promisify(jwt.verify);
 
 const signup = async (username, password) => {
   const hashedPassword = bcrypt.hashSync(password, 8);
@@ -39,9 +41,9 @@ const login = async (username, password) => {
   }
 };
 
-const verify = token => {
+const verifyJwt = async token => {
   try {
-    const decoded = jwt.verify(token, process.env.jwt_secret);
+    const decoded = await jwtVerifyPromise(token, process.env.jwt_secret);
     return {
       statusCode: SUCCESS_CODE,
       body: { userId: decoded.id, message: 'Authorized' },
@@ -54,25 +56,8 @@ const verify = token => {
   }
 };
 
-const validateToken = (req, res, next) => {
-  const token = req.headers['x-access-token'];
-
-  if (!token) {
-    return res.status(FORBIDDEN).send({ message: 'No token provided' });
-  }
-
-  jwt.verify(token, process.env.jwt_secret, (err, decoded) => {
-    if (err) {
-      return res.status(UNAUTHORIZED).send({ message: 'Unauthorized' });
-    }
-    req.userId = decoded.id;
-    next();
-  });
-};
-
 module.exports = {
   login,
   signup,
-  verify,
-  validateToken,
+  verifyJwt,
 };

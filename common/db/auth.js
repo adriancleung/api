@@ -13,7 +13,11 @@ const createUser = async (username, password) => {
 const getUser = async username => {
   const docRef = await collectionRef.doc(username).get();
   if (!docRef.exists) {
-    return { statusCode: RESOURCE_NOT_FOUND };
+    return {
+      statusCode: RESOURCE_NOT_FOUND,
+      id: null,
+      body: { message: 'User not found' },
+    };
   } else {
     return { statusCode: SUCCESS_CODE, id: docRef.id, body: docRef.data() };
   }

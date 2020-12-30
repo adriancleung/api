@@ -16,6 +16,7 @@
     "console-stamp": "^3.0.0-rc4.2",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "express-rate-limit": "^5.2.3",
     "firebase-admin": "^9.4.2",
     "googleapis": "^59.0.0",
     "helmet": "^4.2.0",
@@ -24,6 +25,7 @@
     "moment": "^2.29.1",
     "morgan": "^1.10.0",
     "node-cron": "^2.0.3",
+    "serve-favicon": "^2.5.0",
     "supertest": "^6.0.1",
     "uuid": "^8.3.0",
     "yaml": "^1.10.0"

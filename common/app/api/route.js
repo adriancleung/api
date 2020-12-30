@@ -12,19 +12,19 @@ const generateApiKey = () => {
 router.post('/', (req, res) => {
   const apiKey = generateApiKey();
   addApiKey(apiKey)
-    .then(() => res.status(SUCCESS_CODE).json({ apiKey: apiKey }))
+    .then(() => res.status(SUCCESS_CODE).send({ data: apiKey }))
     .catch(() => res.sendStatus(SERVER_ERROR));
 });
 
 router.get('/', (req, res) => {
   getAllApiKeys()
-    .then(results => res.status(SUCCESS_CODE).json({ apiKeys: results }))
+    .then(results => res.status(SUCCESS_CODE).send({ data: results }))
     .catch(() => res.sendStatus(SERVER_ERROR));
 });
 
 router.get('/:id', (req, res) => {
   getApiKey(req.params.id)
-    .then(results => res.status(results.statusCode).json(results.body))
+    .then(results => res.status(results.statusCode).send(results.body))
     .catch(() => res.sendStatus(SERVER_ERROR));
 });
 
