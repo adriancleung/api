@@ -4,7 +4,7 @@ const { authorize } = require('../../auth/gmailAuth');
 const { SUCCESS_CODE, SERVER_ERROR } = require('../../constants');
 const { sendMail } = require('./util');
 const { saveMail, getAllMail } = require('../../db/mail');
-const { validateAuth } = require('../../auth/apiAuth');
+const { checkAuthorization } = require('../../auth');
 
 router.post('/', (req, res) => {
   const emailBody = {
@@ -33,9 +33,9 @@ router.post('/', (req, res) => {
   }
 });
 
-router.get('/', validateAuth, (req, res) => {
+router.get('/', checkAuthorization, (req, res) => {
   getAllMail()
-    .then(results => res.status(SUCCESS_CODE).json({ mail: results }))
+    .then(results => res.status(SUCCESS_CODE).send({ mail: results }))
     .catch(() => res.sendStatus(SERVER_ERROR));
 });
 

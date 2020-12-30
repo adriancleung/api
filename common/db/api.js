@@ -1,4 +1,4 @@
-const { RESOURCE_NOT_FOUND, SUCCESS_CODE } = require('../constants');
+const { SUCCESS_CODE, UNAUTHORIZED } = require('../constants');
 const { db, FieldValue } = require('./init');
 const collectionRef = db.collection('apiKeys');
 
@@ -21,9 +21,15 @@ const addApiKey = async apiKey => {
 const getApiKey = async apiKey => {
   const docRef = await collectionRef.doc(apiKey).get();
   if (!docRef.exists) {
-    return { statusCode: RESOURCE_NOT_FOUND, body: 'Api key not found' };
+    return {
+      statusCode: UNAUTHORIZED,
+      body: { id: null, message: 'Unauthorized' },
+    };
   } else {
-    return { statusCode: SUCCESS_CODE, body: docRef.data() };
+    return {
+      statusCode: SUCCESS_CODE,
+      body: { id: docRef.id, ...docRef.data() },
+    };
   }
 };
 
