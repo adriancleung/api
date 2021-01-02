@@ -23,7 +23,7 @@ require('./common/util/logging').consoleLogging;
 const app = express();
 
 // Middleware
-app.use(compression);
+app.use(compression());
 app.use(helmet());
 app.use(cors(CORS_OPTIONS));
 app.use(RATE_LIMITER);
