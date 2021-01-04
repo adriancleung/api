@@ -4,4 +4,4 @@ tasks:
     schedule: '* * * * *'
   private_youtube_videos:
     module: common.tasks.private-youtube-videos.handler.endpoint
-    schedule: '0 4 * * 5'
+    schedule: '0 4 * * 6'

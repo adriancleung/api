@@ -1,13 +1,11 @@
-const { authorize } = require('../../auth/youtubeAuth');
-const { google } = require('googleapis');
+const { authorization } = require('../../auth/googleAuth');
 const { SUCCESS_CODE } = require('../../constants');
 
 const endpoint = async () => {
   if (!process.env.youtube_credentials) {
     console.error('Error loading YouTube client secret');
   } else {
-    const auth = await authorize(JSON.parse(process.env.youtube_credentials));
-    const youtube = google.youtube({ version: 'v3', auth: auth });
+    const { youtube } = await authorization();
 
     youtube.search
       .list({

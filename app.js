@@ -16,42 +16,50 @@ const status = require('./common/app/status/route');
 // Import Modules
 const { checkAuthorization } = require('./common/auth');
 const { CORS_OPTIONS, RATE_LIMITER } = require('./common/constants');
-const initializeTasks = require('./common/tasks/init');
+const { init: initializeTasks } = require('./common/tasks/init');
 const { apiLogging } = require('./common/util/logging');
 require('./common/util/logging').consoleLogging;
 
 const app = express();
 
-// Middleware
-app.use(compression());
-app.use(helmet());
-app.use(cors(CORS_OPTIONS));
-app.use(RATE_LIMITER);
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(favicon('favicon.ico'));
-app.use(apiLogging);
+const init = () => {
 
-app.use((req, res, next) => {
-  res.setHeader('X-Powered-By', 'Mostly coffee');
-  next();
-});
+  // Middleware
+  app.use(compression());
+  app.use(helmet());
+  app.use(cors(CORS_OPTIONS));
+  app.use(RATE_LIMITER);
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
+  app.use(favicon('favicon.ico'));
+  app.use(apiLogging);
 
-// Routes
-app.use('/api', checkAuthorization, api);
-app.use('/auth', auth);
-app.use('/brew-coffee', brewCoffee);
-app.use('/mail', mail);
-app.use('/resume', resume);
-app.use('/status', status);
+  app.use((req, res, next) => {
+    res.setHeader('X-Powered-By', 'Mostly coffee');
+    next();
+  });
 
-app.get('/', (req, res) => {
-  res.redirect(301, 'https://adrianleung.dev');
-});
+  // Routes
+  app.use('/api', checkAuthorization, api);
+  app.use('/auth', auth);
+  app.use('/brew-coffee', brewCoffee);
+  app.use('/mail', mail);
+  app.use('/resume', resume);
+  app.use('/status', status);
 
-const listener = app.listen(process.env.PORT, () => {
-  console.info('Your app is listening on port ' + listener.address().port);
-  initializeTasks();
-});
+  app.get('/', (req, res) => {
+    res.redirect(301, 'https://adrianleung.dev');
+  });
 
-module.exports = app;
+  const listener = app.listen(process.env.PORT, () => {
+    console.info('Your app is listening on port ' + listener.address().port);
+    initializeTasks();
+  });
+}
+
+
+
+module.exports = {
+  init,
+  app,
+};

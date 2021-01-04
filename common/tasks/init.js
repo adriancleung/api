@@ -58,12 +58,16 @@ const load_tasks = () => {
           const { taskEndpoint, taskFunction } = load_task(taskPath);
           console.info(`Running task: ${taskName}`);
           const start_time = performance.now();
-          await taskEndpoint[taskFunction]();
-          console.info(
-            `Time took to complete ${taskName}: ${(
-              performance.now() - start_time
-            ).toFixed(3)}ms`
-          );
+          try {
+            await taskEndpoint[taskFunction]();
+            console.info(
+              `Time took to complete ${taskName}: ${(
+                performance.now() - start_time
+              ).toFixed(3)}ms`
+            );
+          } catch (err) {
+            console.error('Error executing task', err);
+          }
         } catch (err) {
           console.warn(
             `Cannot load module: ${taskPath}. Check if module exists or path is correct.`
@@ -94,4 +98,6 @@ const init = () => {
   });
 };
 
-module.exports = init;
+module.exports = {
+  init,
+};
