@@ -1,6 +1,7 @@
 const rateLimit = require('express-rate-limit');
 const path = require('path');
 const SCOPES = ['https://www.googleapis.com/auth/gmail.send'];
+const YOUTUBE_SCOPES = ['https://www.googleapis.com/auth/youtube.force-ssl'];
 const CORS_OPTIONS = {
   origin: '*',
   optionsSuccessStatus: 200,
@@ -22,6 +23,7 @@ const TASKS_PATH = ROOT_DIR + '/tasks.yaml';
 
 module.exports = {
   SCOPES,
+  YOUTUBE_SCOPES,
   CORS_OPTIONS,
   RATE_LIMITER,
   ROOT_DIR,
