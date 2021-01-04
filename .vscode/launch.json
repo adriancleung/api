@@ -25,7 +25,8 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}/app.js",
+            "envFile": "${workspaceFolder}/.env",
+            "program": "${workspaceFolder}/index.js",
             "console": "integratedTerminal"
         },
         {

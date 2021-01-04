@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const { authorize } = require('../../auth/gmailAuth');
+const { checkAuthorization } = require('../../auth');
+const { authorization } = require('../../auth/googleAuth');
 const { SUCCESS_CODE, SERVER_ERROR } = require('../../constants');
 const { sendMail } = require('./util');
 const { saveMail, getAllMail } = require('../../db/mail');
-const { checkAuthorization } = require('../../auth');
 
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
   const emailBody = {
     firstName: req.body.firstName,
     lastName: req.body.lastName,
@@ -17,19 +17,18 @@ router.post('/', (req, res) => {
   if (!process.env.credentials) {
     res.status(SERVER_ERROR).send('Error loading client secret');
   } else {
-    authorize(JSON.parse(process.env.credentials), sendMail, emailBody).then(
-      statusCode => {
-        if (statusCode === SUCCESS_CODE) {
-          saveMail(emailBody)
-            .then(value => {
-              res.sendStatus(value);
-            })
-            .catch(() => res.sendStatus(SERVER_ERROR));
-        } else {
-          res.sendStatus(SERVER_ERROR);
-        }
+    const { gmail } = await authorization();
+    sendMail(gmail, emailBody).then(statusCode => {
+      if (statusCode === SUCCESS_CODE) {
+        saveMail(emailBody)
+          .then(value => {
+            res.sendStatus(value);
+          })
+          .catch(() => res.sendStatus(SERVER_ERROR));
+      } else {
+        res.sendStatus(SERVER_ERROR);
       }
-    );
+    });
   }
 });
 

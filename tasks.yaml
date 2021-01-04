@@ -2,3 +2,6 @@ tasks:
   ping_status:
     module: common.tasks.status.handler.endpoint
     schedule: '* * * * *'
+  private_youtube_videos:
+    module: common.tasks.private-youtube-videos.handler.endpoint
+    schedule: '0 4 * * 6'

@@ -10,9 +10,14 @@ development environment for this project is using dev containers.
 This project uses the following:
 - Express
 - Gmail API
+- YouTube Data API v3
 - Firebase
 
-An OAuth 2.0 Client ID with **Application Type** as `Desktop app` must be generate to access the Gmail API. You can retrieve your Firebase service account key from **Firebase** > **Project settings** > **Service accounts** > **Firebase Admin SDK** > **Generate new private key**
+An OAuth 2.0 Client ID with **Application Type** as `Desktop app` must be generate to access the Gmail API and YouTube Data API v3. An OAuth consent screen must be created with the following scopes:
+ - `https://www.googleapis.com/auth/gmail.send`
+ - `https://www.googleapis.com/auth/youtube.force-ssl`
+ 
+You can retrieve your Firebase service account key from **Firebase** > **Project settings** > **Service accounts** > **Firebase Admin SDK** > **Generate new private key**
 
 Clone this repository:
 
@@ -27,10 +32,17 @@ Grab the environment variables from `.env.TEMPLATE` and replace the values befor
 
 ## API
 ### Available routes
-- `/api`
-- `/brew-coffee`
-- `/mail`
-- `/status`
+- GET `/api`
+- POST `/api`
+- GET `/api/{id}`
+- POST `/auth/signin`
+- POST `/auth/signup`
+- POST `/auth/verify`
+- ALL `/brew-coffee`
+- GET `/mail`
+- POST `/mail`
+- GET `/resume`
+- GET `/status`
 
 ## Tasks
 Tasks can run at specific times based on [GNU crontab][crontab-url]

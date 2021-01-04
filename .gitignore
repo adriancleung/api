@@ -2,8 +2,8 @@
 npm-debug.log
 .DS_Store
 /*.env
-credentials.json
-token.json
+*credentials.json
+*token.json
 dev_firebase_service_account_key.json
 prod_firebase_service_account_key.json
 api.adrianleung.dev.cert

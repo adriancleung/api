@@ -1,8 +1,7 @@
-const { google } = require('googleapis');
 const { SUCCESS_CODE, SERVER_ERROR } = require('../../constants');
 const { encode } = require('../../util/encode');
 
-const sendMail = async (auth, emailBody) => {
+const sendMail = async (gmail, emailBody) => {
   const { firstName, lastName, email, message } = emailBody;
   from = 'From:  Contact - adrianleung.dev <contact@adrianleung.dev>\n';
   replyTo = 'Reply-To: ' + firstName + ' ' + lastName + ' <' + email + '>\n';
@@ -18,7 +17,6 @@ const sendMail = async (auth, emailBody) => {
     message;
   encoded = encode(from + replyTo + to + subject + body);
 
-  const gmail = google.gmail({ version: 'v1', auth });
   const res = await gmail.users.messages.send({
     requestBody: {
       raw: encoded,
