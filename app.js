@@ -6,12 +6,14 @@ const favicon = require('serve-favicon');
 const compression = require('compression');
 
 // Routes
+const about = require('./common/app/about/route');
 const api = require('./common/app/api/route');
 const auth = require('./common/app/auth/route');
 const brewCoffee = require('./common/app/brew-coffee/route');
 const mail = require('./common/app/mail/route');
 const resume = require('./common/app/resume/route');
 const status = require('./common/app/status/route');
+
 
 // Import Modules
 const { checkAuthorization } = require('./common/auth');
@@ -40,6 +42,7 @@ const init = () => {
   });
 
   // Routes
+  app.use('/about', about);
   app.use('/api', checkAuthorization, api);
   app.use('/auth', auth);
   app.use('/brew-coffee', brewCoffee);

@@ -48,7 +48,7 @@ const getNewToken = async (oAuth2Client, scope, envTokenString) => {
   const code = await rl.questionAsync('Enter the code from that page here: ');
   rl.close();
   const { tokens } = await oAuth2Client.getToken(code);
-  console.log(
+  console.info(
     `Set environment variable ${envTokenString} to the following: `,
     JSON.stringify(tokens)
   );
@@ -56,16 +56,20 @@ const getNewToken = async (oAuth2Client, scope, envTokenString) => {
 };
 
 const authorization = async () => {
-  if (!process.env.credentials || !process.env.youtube_credentials) {
+  if (!process.env.gmail_credentials || !process.env.youtube_credentials) {
     throw new Error('Error loading Gmail or YouTube client secrets');
   }
 
-  const gmailAuth = await authorize('gmail', GMAIL_SCOPES);
-  const gmail = google.gmail({ version: 'v1', auth: gmailAuth });
-  const youtubeAuth = await authorize('youtube', YOUTUBE_SCOPES);
-  const youtube = google.youtube({ version: 'v3', auth: youtubeAuth });
+  try {
+    const gmailAuth = await authorize('gmail', GMAIL_SCOPES);
+    const gmail = google.gmail({ version: 'v1', auth: gmailAuth });
+    const youtubeAuth = await authorize('youtube', YOUTUBE_SCOPES);
+    const youtube = google.youtube({ version: 'v3', auth: youtubeAuth });
 
-  return { gmail, youtube };
+    return { gmail, youtube };
+  } catch (err) {
+    console.error(err.message);
+  }
 };
 
 module.exports = {
