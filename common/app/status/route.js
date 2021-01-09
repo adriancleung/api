@@ -1,23 +1,32 @@
 const os = require('os');
 const express = require('express');
-const { SUCCESS_CODE, SERVER_UNAVAILABLE } = require('../../constants');
+const {
+  appName,
+  version,
+  SUCCESS_CODE,
+  SERVER_UNAVAILABLE,
+} = require('../../constants');
+const { errorMsg } = require('../../util/error');
 const router = express.Router();
 
 router.get('/', (req, res) => {
-  const status = {
-    uptime: process.uptime(),
-    platform: process.platform,
-    cpu: os.cpus(),
-    node_version: process.versions.node,
-    message: 'OK',
-    timestamp: Date.now(),
-  };
-
   try {
-    res.status(SUCCESS_CODE).send(status);
+    const status = {
+      appName: appName,
+      version: version,
+      uptime: process.uptime(),
+      platform: process.platform,
+      cpu: os.cpus(),
+      node_version: process.versions.node,
+      message: 'OK',
+      timestamp: Date.now(),
+    };
+    
+    res.status(SUCCESS_CODE).send({ status: status });
   } catch (e) {
-    status.message = e;
-    res.status(SERVER_UNAVAILABLE).send(status);
+    res
+      .status(SERVER_UNAVAILABLE)
+      .send(errorMsg(SERVER_UNAVAILABLE, 'Could not retrieve API status', e));
   }
 });
 

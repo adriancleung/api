@@ -32,6 +32,7 @@ Grab the environment variables from `.env.TEMPLATE` and replace the values befor
 
 ## API
 ### Available routes
+- GET `/about`
 - GET `/api`
 - POST `/api`
 - GET `/api/{id}`

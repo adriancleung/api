@@ -5,6 +5,7 @@ const { authorization } = require('../../auth/googleAuth');
 const { SUCCESS_CODE, SERVER_ERROR } = require('../../constants');
 const { sendMail } = require('./util');
 const { saveMail, getAllMail } = require('../../db/mail');
+const { errorMsg } = require('../../util/error');
 
 router.post('/', async (req, res) => {
   const emailBody = {
@@ -18,24 +19,42 @@ router.post('/', async (req, res) => {
     res.status(SERVER_ERROR).send('Error loading client secret');
   } else {
     const { gmail } = await authorization();
-    sendMail(gmail, emailBody).then(statusCode => {
-      if (statusCode === SUCCESS_CODE) {
-        saveMail(emailBody)
-          .then(value => {
-            res.sendStatus(value);
-          })
-          .catch(() => res.sendStatus(SERVER_ERROR));
-      } else {
-        res.sendStatus(SERVER_ERROR);
-      }
-    });
+    sendMail(gmail, emailBody)
+      .then(statusCode => {
+        if (statusCode === SUCCESS_CODE) {
+          saveMail(emailBody)
+            .then(value => {
+              res.status(value);
+            })
+            .catch(err =>
+              res
+                .status(SERVER_ERROR)
+                .send(
+                  errorMsg(SERVER_ERROR, 'Could not save mail to database', err)
+                )
+            );
+        } else {
+          res
+            .status(SERVER_ERROR)
+            .send(errorMsg(SERVER_ERROR, 'Could not send mail'));
+        }
+      })
+      .catch(err =>
+        res
+          .status(SERVER_ERROR)
+          .send(errorMsg(SERVER_ERROR, 'Could not send mail', err))
+      );
   }
 });
 
 router.get('/', checkAuthorization, (req, res) => {
   getAllMail()
     .then(results => res.status(SUCCESS_CODE).send({ mail: results }))
-    .catch(() => res.sendStatus(SERVER_ERROR));
+    .catch(err =>
+      res
+        .status(SERVER_ERROR)
+        .send(errorMsg(SERVER_ERROR, 'Cannot retrieve mail', err))
+    );
 });
 
 module.exports = router;
