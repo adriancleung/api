@@ -11,9 +11,9 @@ const api = require('./common/app/api/route');
 const auth = require('./common/app/auth/route');
 const brewCoffee = require('./common/app/brew-coffee/route');
 const mail = require('./common/app/mail/route');
+const notify = require('./common/app/notify/route');
 const resume = require('./common/app/resume/route');
 const status = require('./common/app/status/route');
-
 
 // Import Modules
 const { checkAuthorization } = require('./common/auth');
@@ -25,7 +25,6 @@ require('./common/util/logging').consoleLogging;
 const app = express();
 
 const init = () => {
-
   // Middleware
   app.use(compression());
   app.use(helmet());
@@ -47,6 +46,7 @@ const init = () => {
   app.use('/auth', auth);
   app.use('/brew-coffee', brewCoffee);
   app.use('/mail', mail);
+  app.use('/notify', notify);
   app.use('/resume', resume);
   app.use('/status', status);
 
@@ -58,9 +58,7 @@ const init = () => {
     console.info('Your app is listening on port ' + listener.address().port);
     initializeTasks();
   });
-}
-
-
+};
 
 module.exports = {
   init,
