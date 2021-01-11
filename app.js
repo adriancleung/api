@@ -12,6 +12,7 @@ const auth = require('./common/app/auth/route');
 const brewCoffee = require('./common/app/brew-coffee/route');
 const mail = require('./common/app/mail/route');
 const notify = require('./common/app/notify/route');
+const pushie = require('./common/app/pushie/route');
 const resume = require('./common/app/resume/route');
 const status = require('./common/app/status/route');
 
@@ -47,6 +48,7 @@ const init = () => {
   app.use('/brew-coffee', brewCoffee);
   app.use('/mail', mail);
   app.use('/notify', notify);
+  app.use('/pushie', pushie);
   app.use('/resume', resume);
   app.use('/status', status);
 
