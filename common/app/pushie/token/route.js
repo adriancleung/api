@@ -5,7 +5,7 @@ const {
   SERVER_ERROR,
   RESOURCE_NOT_FOUND,
 } = require('../../../constants');
-const { storeUserDeviceToken } = require('../../../db/users');
+const { storeUserDeviceToken } = require('../../../db/pushie');
 
 router.post('/:uid', (req, res) => {
   storeUserDeviceToken(req.params.uid, req.body.token)

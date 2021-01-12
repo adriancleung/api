@@ -1,5 +1,5 @@
 const { v4: uuidv4 } = require('uuid');
-const { db, FieldValue } = require('./init');
+const { db, FieldValue, Timestamp } = require('./init');
 const collectionRef = db.collection('pushieUsers');
 const { timestampCompare } = require('../util/compare');
 
@@ -8,7 +8,7 @@ const createUser = async (uid, email) => {
     email,
     created_at: FieldValue.serverTimestamp(),
     token: '',
-    notifications: [{}],
+    notifications: [],
   });
   return;
 };
@@ -38,7 +38,7 @@ const storeUserNotifications = async (
       title,
       shortDescription,
       description,
-      timestamp: FieldValue.serverTimestamp(),
+      timestamp: Timestamp.now(),
     }),
   });
   return;

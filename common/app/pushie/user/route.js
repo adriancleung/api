@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { createUser, getUserNotifications } = require('../../../db/users');
+const { createUser, getUserNotifications } = require('../../../db/pushie');
 const { errorMsg } = require('../../../util/error');
 const {
   SUCCESS_CODE,

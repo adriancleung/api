@@ -1,3 +1,4 @@
+require('module-alias/register');
 const { init: app } = require('./app');
 const { authorization: googleAuthorization } = require('./common/auth/googleAuth');
 
