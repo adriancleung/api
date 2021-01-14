@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const { checkAuthorization } = require('../../auth');
-const { authorization } = require('../../auth/googleAuth');
-const { SUCCESS_CODE, SERVER_ERROR } = require('../../constants');
-const { sendMail } = require('./util');
-const { saveMail, getAllMail } = require('../../db/mail');
-const { errorMsg } = require('../../util/error');
+const { checkAuthorization } = require('@auth');
+const { authorization } = require('@auth/googleAuth');
+const { SUCCESS_CODE, SERVER_ERROR } = require('@constants');
+const { sendMail } = require('@app/mail/util');
+const { saveMail, getAllMail } = require('@db/mail');
+const { errorMsg } = require('@util/error');
 
 router.post('/', async (req, res) => {
   const emailBody = {
@@ -24,6 +24,11 @@ router.post('/', async (req, res) => {
         if (statusCode === SUCCESS_CODE) {
           saveMail(emailBody)
             .then(value => {
+              notify(
+                process.env.uid,
+                "You've Got Mail!",
+                'Check your mailbox for your message'
+              );
               res.status(value);
             })
             .catch(err =>

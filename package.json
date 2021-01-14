@@ -1,6 +1,6 @@
 {
   "name": "adriancleung-api",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -43,6 +43,6 @@
     "@db": "common/db",
     "@tasks": "common/tasks",
     "@util": "common/util",
-    "@constants" : "common/constants.js"
+    "@constants": "common/constants.js"
   }
 }

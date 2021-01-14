@@ -3,7 +3,7 @@ const YAML = require('yaml');
 const cron = require('node-cron');
 const md5 = require('md5');
 const { performance } = require('perf_hooks');
-const { ROOT_DIR, TASKS_PATH } = require('../constants');
+const { ROOT_DIR, TASKS_PATH } = require('@constants');
 
 const listOfCronTasks = [];
 

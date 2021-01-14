@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const { createUser, getUserNotifications } = require('../../../db/pushie');
-const { errorMsg } = require('../../../util/error');
+const { createUser, getUserNotifications } = require('@db/pushie');
+const { errorMsg } = require('@util/error');
 const {
   SUCCESS_CODE,
   SERVER_ERROR,
   RESOURCE_NOT_FOUND,
-} = require('../../../constants');
+} = require('@constants');
 
 router.get('/:uid', (req, res) => {
   getUserNotifications(req.params.uid)

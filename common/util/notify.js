@@ -1,8 +1,9 @@
-const { admin } = require('../../../db/init');
-const { storeUserNotifications } = require('../../../db/pushie');
+const { admin } = require('@db/init');
+const { storeUserNotifications, getUserDeviceToken } = require('@db/pushie');
 
-const notify = async (uid, token, title, shortDescription, decription) => {
+const notify = async (uid, title, shortDescription, decription) => {
   try {
+    const token = await getUserDeviceToken(uid);
     await storeUserNotifications(uid, title, shortDescription, decription);
     await admin.messaging().send({
       notification: {

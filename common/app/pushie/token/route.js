@@ -4,8 +4,8 @@ const {
   SUCCESS_CODE,
   SERVER_ERROR,
   RESOURCE_NOT_FOUND,
-} = require('../../../constants');
-const { storeUserDeviceToken } = require('../../../db/pushie');
+} = require('@constants');
+const { storeUserDeviceToken, getUserDeviceToken } = require('@db/pushie');
 
 router.post('/:uid', (req, res) => {
   storeUserDeviceToken(req.params.uid, req.body.token)
@@ -14,6 +14,20 @@ router.post('/:uid', (req, res) => {
       res
         .status(SERVER_ERROR)
         .send(errorMsg(SERVER_ERROR, "Could not save user's device token", err))
+    );
+});
+
+router.get('/:uid', (req, res) => {
+  getUserDeviceToken(req.params.uid)
+    .then(value => {
+      res.status(SUCCESS_CODE).send({ token: value });
+    })
+    .catch(err =>
+      res
+        .status(SERVER_ERROR)
+        .send(
+          errorMsg(SERVER_ERROR, "Could not retrieve user's devive token", err)
+        )
     );
 });
 

@@ -5,9 +5,9 @@ const {
   RESOURCE_NOT_FOUND,
   FORBIDDEN,
   SERVER_ERROR,
-} = require('../../constants');
-const { signup, login, verifyJwt } = require('../../auth/jwtAuth');
-const { errorMsg } = require('../../util/error');
+} = require('@constants');
+const { signup, login, verifyJwt } = require('@auth/jwtAuth');
+const { errorMsg } = require('@util/error');
 
 router.all('/', (req, res) => {
   return res.sendStatus(RESOURCE_NOT_FOUND);
