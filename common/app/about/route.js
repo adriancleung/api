@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+
 const { SERVER_ERROR } = require('@constants');
 const { getAboutContent } = require('@db/about');
 const { errorMsg } = require('@util/error');

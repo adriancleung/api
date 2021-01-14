@@ -6,6 +6,7 @@ const { errorMsg } = require('@util/error');
 const { getAllApiKeys, addApiKey, getApiKey } = require('@db/api');
 const { SUCCESS_CODE, SERVER_ERROR } = require('@constants');
 
+
 const generateApiKey = () => {
   return encode(uuidv4().replace(/-/g, ''));
 };
