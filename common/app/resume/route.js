@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const { getResume } = require('../../db/resume');
-const { errorMsg } = require('../../util/error');
-const { SERVER_ERROR } = require('../../constants');
+const { getResume } = require('@db/resume');
+const { errorMsg } = require('@util/error');
+const { SERVER_ERROR } = require('@constants');
 
 router.get('/', (req, res) => {
   getResume()

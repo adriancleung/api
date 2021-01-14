@@ -25,7 +25,7 @@ morgan.token('status', (req, res) => {
 });
 
 morgan.token('date', (req, res) => {
-  return chalk`{grey [${moment().format('ddd MMM DD yyyy HH:MM:ssZZ')}]}`;
+  return chalk`{grey [${moment().format('ddd MMM DD YYYY HH:mm:ssZZ')}]}`;
 });
 
 morgan.token('log_level', (req, res) => {

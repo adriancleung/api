@@ -1,10 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const { v4: uuidv4 } = require('uuid');
-const { encode } = require('../../util/encode');
-const { errorMsg } = require('../../util/error');
-const { getAllApiKeys, addApiKey, getApiKey } = require('../../db/api');
-const { SUCCESS_CODE, SERVER_ERROR } = require('../../constants');
+const { encode } = require('@util/encode');
+const { errorMsg } = require('@util/error');
+const { getAllApiKeys, addApiKey, getApiKey } = require('@db/api');
+const { SUCCESS_CODE, SERVER_ERROR } = require('@constants');
+
 
 const generateApiKey = () => {
   return encode(uuidv4().replace(/-/g, ''));

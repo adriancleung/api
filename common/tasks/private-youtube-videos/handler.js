@@ -1,5 +1,6 @@
-const { authorization } = require('../../auth/googleAuth');
-const { SUCCESS_CODE } = require('../../constants');
+const { notify } = require('@util/notify');
+const { authorization } = require('@auth/googleAuth');
+const { SUCCESS_CODE } = require('@constants');
 
 const endpoint = async () => {
   if (!process.env.youtube_credentials) {
@@ -26,6 +27,12 @@ const endpoint = async () => {
           Object.keys(response.data.items).length == 0
         ) {
           console.warn('No videos found');
+          notify(
+            process.env.uid,
+            'No Videos Found',
+            'Could not find any videos to private',
+            null
+          );
           return;
         }
 
@@ -50,8 +57,20 @@ const endpoint = async () => {
               console.info(
                 `Video ${response.data.items[0].id.videoId} made private`
               );
+              notify(
+                process.env.uid,
+                'Video Made Private',
+                `Video ${response.data.items[0].id.videoId} was made private`,
+                null
+              );
             } else {
               console.warn('Could not update video privacy', value.data);
+              notify(
+                process.env.uid,
+                'Could Not Private Video',
+                `Could not make video ${response.data.items[0].id.videoId} private. Please private video manually`,
+                null
+              );
             }
           })
           .catch(err => console.error('Error updating video privacy', err));

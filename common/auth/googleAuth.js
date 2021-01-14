@@ -1,7 +1,7 @@
 const { google } = require('googleapis');
 const readline = require('readline');
 const { promisify } = require('util');
-const { GMAIL_SCOPES, YOUTUBE_SCOPES } = require('../constants');
+const { GMAIL_SCOPES, YOUTUBE_SCOPES } = require('@constants');
 
 readline.Interface.prototype.question[promisify.custom] = function (prompt) {
   return new Promise(resolve =>

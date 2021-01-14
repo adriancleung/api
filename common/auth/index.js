@@ -1,6 +1,6 @@
-const { SUCCESS_CODE, FORBIDDEN } = require('../constants');
-const { verifyApiKey } = require('./apiKeyAuth');
-const { verifyJwt } = require('./jwtAuth');
+const { SUCCESS_CODE, FORBIDDEN } = require('@constants');
+const { verifyApiKey } = require('@auth/apiKeyAuth');
+const { verifyJwt } = require('@auth/jwtAuth');
 
 const checkAuthorization = (req, res, next) => {
   if (req.headers['x-access-token']) {

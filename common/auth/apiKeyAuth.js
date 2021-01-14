@@ -1,5 +1,5 @@
-const { SERVER_ERROR } = require('../constants');
-const { getApiKey } = require('../db/api');
+const { SERVER_ERROR } = require('@constants');
+const { getApiKey } = require('@db/api');
 
 const verifyApiKey = async apiKey => {
   try {

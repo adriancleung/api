@@ -6,26 +6,27 @@ const favicon = require('serve-favicon');
 const compression = require('compression');
 
 // Routes
-const about = require('./common/app/about/route');
-const api = require('./common/app/api/route');
-const auth = require('./common/app/auth/route');
-const brewCoffee = require('./common/app/brew-coffee/route');
-const mail = require('./common/app/mail/route');
-const resume = require('./common/app/resume/route');
-const status = require('./common/app/status/route');
+const about = require('@app/about');
+const api = require('@app/api');
+const auth = require('@app/auth');
+const brewCoffee = require('@app/brew-coffee');
+const mail = require('@app/mail');
+const pushie = require('@app/pushie/route');
+const resume = require('@app/resume/route');
+const status = require('@app/status/route');
+
 
 
 // Import Modules
-const { checkAuthorization } = require('./common/auth');
-const { CORS_OPTIONS, RATE_LIMITER } = require('./common/constants');
-const { init: initializeTasks } = require('./common/tasks/init');
-const { apiLogging } = require('./common/util/logging');
-require('./common/util/logging').consoleLogging;
+const { checkAuthorization } = require('@auth');
+const { CORS_OPTIONS, RATE_LIMITER } = require('@constants');
+const { init: initializeTasks } = require('@tasks/init');
+const { apiLogging } = require('@util/logging');
+require('@util/logging').consoleLogging;
 
 const app = express();
 
 const init = () => {
-
   // Middleware
   app.use(compression());
   app.use(helmet());
@@ -47,6 +48,7 @@ const init = () => {
   app.use('/auth', auth);
   app.use('/brew-coffee', brewCoffee);
   app.use('/mail', mail);
+  app.use('/pushie', pushie);
   app.use('/resume', resume);
   app.use('/status', status);
 
@@ -58,9 +60,7 @@ const init = () => {
     console.info('Your app is listening on port ' + listener.address().port);
     initializeTasks();
   });
-}
-
-
+};
 
 module.exports = {
   init,

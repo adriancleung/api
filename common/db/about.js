@@ -1,5 +1,5 @@
-const { db } = require('./init');
-const { RESOURCE_NOT_FOUND, SUCCESS_CODE } = require('../constants');
+const { db } = require('@db/init');
+const { RESOURCE_NOT_FOUND, SUCCESS_CODE } = require('@constants');
 const collectionRef = db.collection('data');
 
 const getAboutContent = async () => {

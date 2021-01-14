@@ -5,8 +5,8 @@ const {
   SUCCESS_CODE,
   UNAUTHORIZED,
   RESOURCE_NOT_FOUND,
-} = require('../constants');
-const { createUser, getUser } = require('../db/auth');
+} = require('@constants');
+const { createUser, getUser } = require('@db/auth');
 
 const jwtVerifyPromise = util.promisify(jwt.verify);
 

@@ -1,5 +1,5 @@
-const { SUCCESS_CODE, SERVER_ERROR } = require('../constants');
-const { db, FieldValue } = require('./init');
+const { SUCCESS_CODE, SERVER_ERROR } = require('@constants');
+const { db, FieldValue } = require('@db/init');
 const collectionRef = db.collection('mail');
 
 const saveMail = async emailBody => {

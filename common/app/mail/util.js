@@ -1,5 +1,5 @@
-const { SUCCESS_CODE, SERVER_ERROR } = require('../../constants');
-const { encode } = require('../../util/encode');
+const { SUCCESS_CODE, SERVER_ERROR } = require('@constants');
+const { encode } = require('@util/encode');
 
 const sendMail = async (gmail, emailBody) => {
   const { firstName, lastName, email, message } = emailBody;

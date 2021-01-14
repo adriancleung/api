@@ -5,8 +5,8 @@ const {
   version,
   SUCCESS_CODE,
   SERVER_UNAVAILABLE,
-} = require('../../constants');
-const { errorMsg } = require('../../util/error');
+} = require('@constants');
+const { errorMsg } = require('@util/error');
 const router = express.Router();
 
 router.get('/', (req, res) => {
@@ -21,7 +21,7 @@ router.get('/', (req, res) => {
       message: 'OK',
       timestamp: Date.now(),
     };
-    
+
     res.status(SUCCESS_CODE).send({ status: status });
   } catch (e) {
     res

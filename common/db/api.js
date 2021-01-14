@@ -1,5 +1,5 @@
-const { SUCCESS_CODE, UNAUTHORIZED } = require('../constants');
-const { db, FieldValue } = require('./init');
+const { SUCCESS_CODE, UNAUTHORIZED } = require('@constants');
+const { db, FieldValue } = require('@db/init');
 const collectionRef = db.collection('apiKeys');
 
 const getAllApiKeys = async () => {
