@@ -6,7 +6,7 @@ const { SUCCESS_CODE, SERVER_ERROR } = require('@constants');
 
 router.post('/', async (req, res) => {
   notify(
-    req.body.uid,
+    req.uid,
     req.body.title,
     req.body.shortDescription,
     req.body.description

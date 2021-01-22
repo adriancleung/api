@@ -2,16 +2,19 @@ const { v4: uuidv4 } = require('uuid');
 const { db, FieldValue, Timestamp } = require('@db/init');
 const { getDateTimeFromTimestamp } = require('@util/dateTime');
 const { timestampCompare } = require('@util/compare');
+const { encode } = require('@util/encode');
 const collectionRef = db.collection('pushie');
 
 const createUser = async (uid, email) => {
+  const apiKey = encode(uuidv4().replace(/-/g, ''));
   await collectionRef.doc(uid).set({
+    apiKey,
+    createdAt: FieldValue.serverTimestamp(),
     email,
-    created_at: FieldValue.serverTimestamp(),
     token: '',
     notifications: [],
   });
-  return;
+  return apiKey;
 };
 
 const getUserDeviceToken = async uid => {
@@ -53,10 +56,26 @@ const storeUserNotifications = async (
   return;
 };
 
+const getUserApiKey = async uid => {
+  const docRef = await collectionRef.doc(uid).get();
+  return docRef.get('apiKey');
+};
+
+const searchForUID = async (field, value) => {
+  const user = await collectionRef.where(field, '==', value).get();
+  if (user.empty) {
+    return;
+  }
+  const docRef = user.docs[0];
+  return docRef.id;
+};
+
 module.exports = {
   createUser,
   getUserDeviceToken,
   storeUserDeviceToken,
   getUserNotifications,
   storeUserNotifications,
+  getUserApiKey,
+  searchForUID,
 };

@@ -42,6 +42,11 @@ Grab the environment variables from `.env.TEMPLATE` and replace the values befor
 - ALL `/brew-coffee`
 - GET `/mail`
 - POST `/mail`
+- POST `/pushie/notify`
+- GET `/pushie/token`
+- POST `/pushie/token`
+- POST `/pushie/user`
+- GET `/pushie/user`
 - GET `/resume`
 - GET `/status`
 

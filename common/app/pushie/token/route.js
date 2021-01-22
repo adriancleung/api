@@ -1,14 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const {
-  SUCCESS_CODE,
-  SERVER_ERROR,
-  RESOURCE_NOT_FOUND,
-} = require('@constants');
+const { SUCCESS_CODE, SERVER_ERROR } = require('@constants');
 const { storeUserDeviceToken, getUserDeviceToken } = require('@db/pushie');
 
-router.post('/:uid', (req, res) => {
-  storeUserDeviceToken(req.params.uid, req.body.token)
+router.post('/', (req, res) => {
+  storeUserDeviceToken(req.uid, req.body.token)
     .then(() => res.sendStatus(SUCCESS_CODE))
     .catch(err =>
       res
@@ -17,8 +13,8 @@ router.post('/:uid', (req, res) => {
     );
 });
 
-router.get('/:uid', (req, res) => {
-  getUserDeviceToken(req.params.uid)
+router.get('/', (req, res) => {
+  getUserDeviceToken(req.uid)
     .then(value => {
       res.status(SUCCESS_CODE).send({ token: value });
     })
@@ -29,10 +25,6 @@ router.get('/:uid', (req, res) => {
           errorMsg(SERVER_ERROR, "Could not retrieve user's devive token", err)
         )
     );
-});
-
-router.all('/', (req, res) => {
-  res.sendStatus(RESOURCE_NOT_FOUND);
 });
 
 module.exports = router;

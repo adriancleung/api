@@ -48,7 +48,7 @@ const init = () => {
   app.use('/auth', auth);
   app.use('/brew-coffee', brewCoffee);
   app.use('/mail', mail);
-  app.use('/pushie', pushie);
+  app.use('/pushie', checkAuthorization, pushie);
   app.use('/resume', resume);
   app.use('/status', status);
 
