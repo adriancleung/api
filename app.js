@@ -20,7 +20,6 @@ const status = require('@app/status/route');
 // Import Modules
 const { checkAuthorization } = require('@auth');
 const { CORS_OPTIONS, RATE_LIMITER } = require('@constants');
-const { init: initializeTasks } = require('@tasks/init');
 const { apiLogging } = require('@util/logging');
 require('@util/logging').consoleLogging;
 
@@ -58,7 +57,6 @@ const init = () => {
 
   const listener = app.listen(process.env.PORT, () => {
     console.info('Your app is listening on port ' + listener.address().port);
-    initializeTasks();
   });
 };
 
