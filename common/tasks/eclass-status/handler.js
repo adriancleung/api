@@ -8,6 +8,12 @@ const endpoint = async () => {
     console.error('Error loading Discord webhook URL');
   } else {
     const previousStatus = await getData('previousEClassStatus');
+    
+    if (previousStatus !== null) {
+      await storeData('previousEClassStatus', status);
+      return;
+    }
+
     const res = await axios.get(
       'https://status.eclass.ualberta.ca/api/v2/status.json'
     );
