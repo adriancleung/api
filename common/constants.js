@@ -27,6 +27,20 @@ const ROOT_DIR = path.dirname(
 );
 const TASKS_PATH = ROOT_DIR + '/tasks.yaml';
 
+const ECLASS_STATUS_TEXT = {
+  none: 'Operational',
+  minor: 'Minor Issues',
+  major: 'Major Issues',
+  critical: 'Critical Issues',
+}
+
+const ECLASS_EMBED_COLOURS = {
+  none: 3066993,
+  minor: 15844367,
+  major: 15105570,
+  critical: 15158332,
+};
+
 module.exports = {
   appName,
   version,
@@ -43,4 +57,6 @@ module.exports = {
   RESOURCE_NOT_FOUND,
   SERVER_ERROR,
   SERVER_UNAVAILABLE,
+  ECLASS_STATUS_TEXT,
+  ECLASS_EMBED_COLOURS,
 };
