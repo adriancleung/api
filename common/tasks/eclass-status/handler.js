@@ -9,7 +9,7 @@ const endpoint = async () => {
   } else {
     const previousStatus = await getData('previousEClassStatus');
     
-    if (previousStatus !== null) {
+    if (previousStatus === null) {
       await storeData('previousEClassStatus', status);
       return;
     }
