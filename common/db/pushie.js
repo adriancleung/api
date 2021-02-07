@@ -3,6 +3,7 @@ const { db, FieldValue, Timestamp } = require('@db/init');
 const { getDateTimeFromTimestamp } = require('@util/dateTime');
 const { timestampCompare } = require('@util/compare');
 const { encode } = require('@util/encode');
+const { SUCCESS_CODE } = require('@constants');
 const collectionRef = db.collection('pushie');
 
 const createUser = async (uid, email) => {
@@ -56,6 +57,25 @@ const storeUserNotifications = async (
   return;
 };
 
+const deleteUserNotification = async (uid, item) => {
+  try {
+    const docRef = collectionRef.doc(uid);
+    const results = await docRef.update({
+      notifications: FieldValue.arrayRemove({
+        id: item.id,
+        title: item.title,
+        shortDescription: item.shortDescription,
+        description: item.description,
+        timestamp: Timestamp.fromDate(new Date(item.timestamp)),
+      }),
+    });
+    console.log(results);
+    return SUCCESS_CODE;
+  } catch (err) {
+    throw new Error(err);
+  }
+};
+
 const getUserApiKey = async uid => {
   const docRef = await collectionRef.doc(uid).get();
   return docRef.get('apiKey');
@@ -76,6 +96,7 @@ module.exports = {
   storeUserDeviceToken,
   getUserNotifications,
   storeUserNotifications,
+  deleteUserNotification,
   getUserApiKey,
   searchForUID,
 };
