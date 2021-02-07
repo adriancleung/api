@@ -4,6 +4,7 @@ const {
   createUser,
   getUserNotifications,
   getUserApiKey,
+  deleteUserNotification,
 } = require('@db/pushie');
 const { errorMsg } = require('@util/error');
 const { SUCCESS_CODE, SERVER_ERROR } = require('@constants');
@@ -25,6 +26,18 @@ router.get('/api', (req, res) => {
       res
         .status(SERVER_ERROR)
         .send(errorMsg(SERVER_ERROR, 'Could not retrieve api key', err))
+    );
+});
+
+router.delete('/', (req, res) => {
+  deleteUserNotification(req.uid, req.body)
+    .then(results => res.status(SUCCESS_CODE).send(results))
+    .catch(err =>
+      res
+        .status(SERVER_ERROR)
+        .send(
+          errorMsg(SERVER_ERROR, "Could not delete user's notification", err)
+        )
     );
 });
 
