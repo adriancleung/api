@@ -79,6 +79,12 @@ const load_tasks = () => {
 };
 
 const init = () => {
+  console.info(`NODE_ENV: ${process.env.NODE_ENV}`);
+  if (process.env.NODE_ENV === 'development') {
+    console.info('Will not initialize tasks');
+    return;
+  }
+  console.info('Initalizing tasks...');
   var md5Previous = null;
   var fsWait = false;
 

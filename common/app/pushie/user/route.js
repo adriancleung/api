@@ -31,7 +31,7 @@ router.get('/api', (req, res) => {
 
 router.delete('/', (req, res) => {
   deleteUserNotification(req.uid, req.body)
-    .then(results => res.status(SUCCESS_CODE).send(results))
+    .then(() => res.sendStatus(SUCCESS_CODE))
     .catch(err =>
       res
         .status(SERVER_ERROR)
@@ -45,7 +45,6 @@ router.post('/', (req, res) => {
   createUser(req.uid, req.body.email)
     .then(apiKey => res.status(SUCCESS_CODE).send(apiKey))
     .catch(err => {
-      console.log(err);
       res
         .status(SERVER_ERROR)
         .send(errorMsg(SERVER_ERROR, 'Could not create user', err));

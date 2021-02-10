@@ -3,40 +3,59 @@ const { db, FieldValue, Timestamp } = require('@db/init');
 const { getDateTimeFromTimestamp } = require('@util/dateTime');
 const { timestampCompare } = require('@util/compare');
 const { encode } = require('@util/encode');
-const { SUCCESS_CODE } = require('@constants');
 const collectionRef = db.collection('pushie');
 
 const createUser = async (uid, email) => {
   const apiKey = encode(uuidv4().replace(/-/g, ''));
-  await collectionRef.doc(uid).set({
-    apiKey,
-    createdAt: FieldValue.serverTimestamp(),
-    email,
-    token: '',
-    notifications: [],
-  });
-  return apiKey;
+  try {
+    await collectionRef.doc(uid).set({
+      apiKey,
+      createdAt: FieldValue.serverTimestamp(),
+      email,
+      token: '',
+      notifications: [],
+    });
+    return apiKey;
+  } catch (err) {
+    console.error(err);
+    throw new Error(`${err.name}: ${err.message}`);
+  }
 };
 
 const getUserDeviceToken = async uid => {
-  const docRef = await collectionRef.doc(uid).get();
-  return docRef.get('token');
+  try {
+    const docRef = await collectionRef.doc(uid).get();
+    return docRef.get('token');
+  } catch (err) {
+    console.error(err);
+    throw new Error(`${err.name}: ${err.message}`);
+  }
 };
 
 const storeUserDeviceToken = async (uid, token) => {
-  await collectionRef.doc(uid).update({
-    token,
-  });
+  try {
+    await collectionRef.doc(uid).update({
+      token,
+    });
+  } catch (err) {
+    console.error(err);
+    throw new Error(`${err.name}: ${err.message}`);
+  }
 };
 
 const getUserNotifications = async uid => {
-  const docRef = await collectionRef.doc(uid).get();
-  const results = docRef.get('notifications');
-  results.sort(timestampCompare);
-  results.forEach(value => {
-    value.timestamp = getDateTimeFromTimestamp(value.timestamp);
-  });
-  return results;
+  try {
+    const docRef = await collectionRef.doc(uid).get();
+    const results = docRef.get('notifications');
+    results.sort(timestampCompare);
+    results.forEach(value => {
+      value.timestamp = getDateTimeFromTimestamp(value.timestamp);
+    });
+    return results;
+  } catch (err) {
+    console.error(err);
+    throw new Error(`${err.name}: ${err.message}`);
+  }
 };
 
 const storeUserNotifications = async (
@@ -45,22 +64,42 @@ const storeUserNotifications = async (
   shortDescription,
   description
 ) => {
-  await collectionRef.doc(uid).update({
-    notifications: FieldValue.arrayUnion({
-      id: uuidv4(),
+  if (title === undefined) {
+    throw new Error('Notification title is missing. Please provide a title');
+  } else if (shortDescription === undefined) {
+    throw new Error(
+      'Notification short description is missing. Please provide a short desciption'
+    );
+  }
+  try {
+    const id = uuidv4();
+    const timestamp = Timestamp.now();
+    await collectionRef.doc(uid).update({
+      notifications: FieldValue.arrayUnion({
+        id,
+        title,
+        shortDescription,
+        description: description ? description : null,
+        timestamp,
+      }),
+    });
+    return {
+      id,
       title,
       shortDescription,
       description,
-      timestamp: Timestamp.now(),
-    }),
-  });
-  return;
+      timestamp: getDateTimeFromTimestamp(timestamp),
+    };
+  } catch (err) {
+    console.error(err);
+    throw new Error(`${err.name}: ${err.message}`);
+  }
 };
 
 const deleteUserNotification = async (uid, item) => {
   try {
     const docRef = collectionRef.doc(uid);
-    const results = await docRef.update({
+    await docRef.update({
       notifications: FieldValue.arrayRemove({
         id: item.id,
         title: item.title,
@@ -69,25 +108,34 @@ const deleteUserNotification = async (uid, item) => {
         timestamp: Timestamp.fromDate(new Date(item.timestamp)),
       }),
     });
-    console.log(results);
-    return SUCCESS_CODE;
   } catch (err) {
-    throw new Error(err);
+    console.error(err);
+    throw new Error(`${err.name}: ${err.message}`);
   }
 };
 
 const getUserApiKey = async uid => {
-  const docRef = await collectionRef.doc(uid).get();
-  return docRef.get('apiKey');
+  try {
+    const docRef = await collectionRef.doc(uid).get();
+    return docRef.get('apiKey');
+  } catch (err) {
+    console.error(err);
+    throw new Error(`${err.name}: ${err.message}`);
+  }
 };
 
 const searchForUID = async (field, value) => {
-  const user = await collectionRef.where(field, '==', value).get();
-  if (user.empty) {
-    return;
+  try {
+    const user = await collectionRef.where(field, '==', value).get();
+    if (user.empty) {
+      return;
+    }
+    const docRef = user.docs[0];
+    return docRef.id;
+  } catch (err) {
+    console.error(err);
+    throw new Error(`${err.name}: ${err.message}`);
   }
-  const docRef = user.docs[0];
-  return docRef.id;
 };
 
 module.exports = {

@@ -17,7 +17,11 @@ const checkAuthorization = (req, res, next) => {
           res.status(value.statusCode).send(value.body);
         }
       })
-      .catch(err => {});
+      .catch(err =>
+        res
+          .status(SERVER_ERROR)
+          .send(errorMsg(SERVER_ERROR, 'Error authenticating user', err))
+      );
   } else if (req.headers['x-api-key']) {
     verifyApiKey()
       .then(value => {
@@ -28,7 +32,11 @@ const checkAuthorization = (req, res, next) => {
           res.status(value.statusCode).send(value.body);
         }
       })
-      .catch(err => {});
+      .catch(err =>
+        res
+          .status(SERVER_ERROR)
+          .send(errorMsg(SERVER_ERROR, 'Error authenticating user', err))
+      );
   } else if (req.headers['authorization']) {
     const token = req.headers['authorization'].split(' ')[1];
     if (token === undefined) {
@@ -45,7 +53,11 @@ const checkAuthorization = (req, res, next) => {
             res.status(value.statusCode).send(value.body);
           }
         })
-        .catch(err => {});
+        .catch(err =>
+          res
+            .status(SERVER_ERROR)
+            .send(errorMsg(SERVER_ERROR, 'Error authenticating user', err))
+        );
     }
   } else if (req.headers['pushie-api-key']) {
     verifyPushieApiKey(req.headers['pushie-api-key'])
@@ -57,7 +69,11 @@ const checkAuthorization = (req, res, next) => {
           res.status(value.statusCode).send(value.body);
         }
       })
-      .catch(err => {});
+      .catch(err =>
+        res
+          .status(SERVER_ERROR)
+          .send(errorMsg(SERVER_ERROR, 'Error authenticating user', err))
+      );
   } else {
     res
       .status(UNAUTHORIZED)

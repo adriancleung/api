@@ -1,7 +1,6 @@
 const admin = require('firebase-admin');
 const FieldValue = admin.firestore.FieldValue;
 const Timestamp = admin.firestore.Timestamp;
-const arrayRemove = admin.firestore.FieldValue.arrayRemove;
 
 admin.initializeApp({
   credential: admin.credential.cert(
@@ -17,5 +16,4 @@ module.exports = {
   db,
   FieldValue,
   Timestamp,
-  arrayRemove,
 };
