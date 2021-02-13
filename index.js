@@ -1,8 +1,8 @@
-const { init: app } = require('./app');
+require('module-alias/register');
 const { authorization: googleAuthorization } = require('@auth/googleAuth');
 
 googleAuthorization()
   .then(() => {
-    app();
+    require('./cluster');
   })
   .catch(err => console.error(err));
