@@ -11,6 +11,10 @@ const verifyIdToken = token => {
         statusCode: SUCCESS_CODE,
         body: { uid: decodedIdToken.uid, message: 'Authorized' },
       };
+    })
+    .catch(err => {
+      console.error(err);
+      throw new Error(`${err.name}: ${err.message}`);
     });
 };
 
@@ -27,6 +31,10 @@ const verifyApiKey = apiKey => {
         body: { uid: value, message: 'Authorized' },
       };
     }
+  })
+  .catch(err => {
+    console.error(err);
+    throw new Error(`${err.name}: ${err.message}`);
   });
 };
 

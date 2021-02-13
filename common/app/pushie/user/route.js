@@ -4,6 +4,7 @@ const {
   createUser,
   getUserNotifications,
   getUserApiKey,
+  deleteUserNotification,
 } = require('@db/pushie');
 const { errorMsg } = require('@util/error');
 const { SUCCESS_CODE, SERVER_ERROR } = require('@constants');
@@ -28,11 +29,22 @@ router.get('/api', (req, res) => {
     );
 });
 
+router.delete('/', (req, res) => {
+  deleteUserNotification(req.uid, req.body)
+    .then(() => res.sendStatus(SUCCESS_CODE))
+    .catch(err =>
+      res
+        .status(SERVER_ERROR)
+        .send(
+          errorMsg(SERVER_ERROR, "Could not delete user's notification", err)
+        )
+    );
+});
+
 router.post('/', (req, res) => {
   createUser(req.uid, req.body.email)
     .then(apiKey => res.status(SUCCESS_CODE).send(apiKey))
     .catch(err => {
-      console.log(err);
       res
         .status(SERVER_ERROR)
         .send(errorMsg(SERVER_ERROR, 'Could not create user', err));

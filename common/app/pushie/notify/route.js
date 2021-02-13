@@ -11,7 +11,11 @@ router.post('/', async (req, res) => {
     req.body.shortDescription,
     req.body.description
   )
-    .then(() => res.sendStatus(SUCCESS_CODE))
+    .then(value =>
+      res
+        .status(SUCCESS_CODE)
+        .send({ statusCode: SUCCESS_CODE, payload: value })
+    )
     .catch(err =>
       res
         .status(SERVER_ERROR)
