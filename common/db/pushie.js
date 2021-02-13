@@ -124,6 +124,32 @@ const getUserApiKey = async uid => {
   }
 };
 
+const refreshApiKey = async uid => {
+  let apiKey;
+  while (true) {
+    apiKey = encode(uuidv4().replace(/-/g, ''));
+    try {
+      const results = await searchForUID('apiKey', apiKey);
+      if (!results) {
+        break;
+      }  
+    } catch (err) {
+      console.error(err);
+      throw new Error(`${err.name}: ${err.message}`);
+    }
+  }
+  try {
+    const docRef = collectionRef.doc(uid);
+    await docRef.update({
+      apiKey: apiKey,
+    });
+    return apiKey;
+  } catch (err) {
+    console.error(err);
+    throw new Error(`${err.name}: ${err.message}`);
+  }
+};
+
 const searchForUID = async (field, value) => {
   try {
     const user = await collectionRef.where(field, '==', value).get();
@@ -146,5 +172,6 @@ module.exports = {
   storeUserNotifications,
   deleteUserNotification,
   getUserApiKey,
+  refreshApiKey,
   searchForUID,
 };

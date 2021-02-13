@@ -5,6 +5,7 @@ const {
   getUserNotifications,
   getUserApiKey,
   deleteUserNotification,
+  refreshApiKey,
 } = require('@db/pushie');
 const { errorMsg } = require('@util/error');
 const { SUCCESS_CODE, SERVER_ERROR } = require('@constants');
@@ -26,6 +27,16 @@ router.get('/api', (req, res) => {
       res
         .status(SERVER_ERROR)
         .send(errorMsg(SERVER_ERROR, 'Could not retrieve api key', err))
+    );
+});
+
+router.post('/api', (req, res) => {
+  refreshApiKey(req.uid)
+    .then(results => res.status(SUCCESS_CODE).send(results))
+    .catch(err =>
+      res
+        .status(SERVER_ERROR)
+        .send(errorMsg(SERVER_ERROR, 'Could not refresh api key', err))
     );
 });
 
