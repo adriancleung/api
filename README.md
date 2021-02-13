@@ -45,8 +45,11 @@ Grab the environment variables from `.env.TEMPLATE` and replace the values befor
 - POST `/pushie/notify`
 - GET `/pushie/token`
 - POST `/pushie/token`
-- POST `/pushie/user`
 - GET `/pushie/user`
+- POST `/pushie/user`
+- DELETE `/pushie/user`
+- GET `/pushie/user/api`
+- POST `/pushie/user/api`
 - GET `/resume`
 - GET `/status`
 
