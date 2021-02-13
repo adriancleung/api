@@ -1,5 +1,5 @@
 const request = require('supertest');
-const { app } = require('@app');
+const { app } = require('@root/app');
 
 const endpoint = () => {
   request(app)
