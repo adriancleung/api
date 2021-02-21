@@ -1,6 +1,11 @@
 const rateLimit = require('express-rate-limit');
 const path = require('path');
-const { name: appName, version } = require('../package.json');
+const {
+  name: appName,
+  version,
+  description,
+  author,
+} = require('../package.json');
 
 const GMAIL_SCOPES = ['https://www.googleapis.com/auth/gmail.send'];
 const YOUTUBE_SCOPES = ['https://www.googleapis.com/auth/youtube.force-ssl'];
@@ -32,13 +37,54 @@ const ECLASS_STATUS_TEXT = {
   minor: 'Minor Issues',
   major: 'Major Issues',
   critical: 'Critical Issues',
-}
+};
 
 const ECLASS_EMBED_COLOURS = {
   none: 3066993,
   minor: 15844367,
   major: 15105570,
   critical: 15158332,
+};
+
+const OPENAPI_OPTIONS = {
+  definition: {
+    openapi: '3.0.3',
+    info: {
+      title: appName,
+      description,
+      version,
+      contact: {
+        name: author.name,
+        url: author.url,
+        email: author.email,
+      },
+      license: {
+        name: 'MIT License',
+        url: 'https://opensource.org/licenses/MIT',
+      },
+    },
+    servers: [
+      {
+        url: 'https://api.adrianleung.dev',
+      },
+    ],
+    tags: [
+      {
+        name: 'pushie',
+        description: 'Endpoints for pushie app',
+      },
+      {
+        name: 'website',
+        description: 'Endpoints for [adrianleung.dev](https://adrianleung.dev)',
+      },
+    ],
+  },
+  apis: ['./common/app/**/*.js', './docs/openapi.yaml'],
+};
+
+const SWAGGER_UI_OPTIONS = {
+  customSiteTitle: appName,
+  customCss: '.swagger-ui .topbar { display: none }',
 };
 
 module.exports = {
@@ -59,4 +105,6 @@ module.exports = {
   SERVER_UNAVAILABLE,
   ECLASS_STATUS_TEXT,
   ECLASS_EMBED_COLOURS,
+  OPENAPI_OPTIONS,
+  SWAGGER_UI_OPTIONS,
 };

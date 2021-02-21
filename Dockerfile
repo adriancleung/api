@@ -9,6 +9,6 @@ RUN if [ -z "$IS_DEV_CONTAINER" ]; then \
 
 COPY . .
 
-RUN npm install
+RUN npm ci
 
 CMD ["node", "app.js"]

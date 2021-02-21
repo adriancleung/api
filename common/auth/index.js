@@ -23,7 +23,7 @@ const checkAuthorization = (req, res, next) => {
           .send(errorMsg(SERVER_ERROR, 'Error authenticating user', err))
       );
   } else if (req.headers['x-api-key']) {
-    verifyApiKey()
+    verifyApiKey(req.headers['x-api-key'])
       .then(value => {
         if (value.statusCode === SUCCESS_CODE) {
           req.userId = value.id;

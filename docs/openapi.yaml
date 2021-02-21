@@ -1,0 +1,223 @@
+components:
+  # Security Definitions
+  securitySchemes:
+    JwtAuth:
+      type: apiKey
+      in: header
+      name: X-Access-Token
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+    PushieJwtAuth:
+      type: http
+      scheme: Bearer
+    PushieNotificationAuth:
+      type: apiKey
+      in: header
+      name: Pushie-API-Key
+
+  # Schema objects
+  schemas:
+    Forbidden:
+      type: object
+      properties:
+        message:
+          type: string
+          default: No token provided
+    GeneralError:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: number
+              default: 500
+            message:
+              type: string
+            errorMsg:
+              type: string
+              nullable: true
+    Mail:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+          format: email
+        message:
+          type: string
+        created_at:
+          type: object
+          properties:
+            _seconds:
+              type: number
+            _nanoseconds:
+              type: number
+    NotFound:
+      type: string
+      default: Resource not found
+    Notification:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        shortDescription:
+          type: string
+        description:
+          type: string
+          nullable: true
+        timestamp:
+          type: string
+          format: date-time
+    ServerUnavailable:
+      type: object
+      properties:
+        code:
+          type: number
+          default: 503
+        message:
+          type: string
+          default: Could not retrieve API status
+        errorMsg:
+          type: string
+          nullable: true
+    Status:
+      type: object
+      properties:
+        status:
+          type: object
+          properties:
+            appName:
+              type: string
+              default: adriancleung-api
+            version:
+              type: string
+            uptime:
+              type: number
+              format: float
+            platform:
+              type: string
+              enum: [aix, darwin, freebsd, linux, openbsd, sunos, win32]
+              default: linux
+            cpu:
+              type: array
+              items:
+                type: object
+                properties:
+                  0:
+                    type: object
+                    properties:
+                      model:
+                        type: string
+                      speed:
+                        type: number
+                      times:
+                        type: object
+                        properties:
+                          user:
+                            type: number
+                          nice:
+                            type: number
+                          sys:
+                            type: number
+                          idle:
+                            type: number
+                          irq:
+                            type: number
+            node_version:
+              type: string
+            message:
+              type: string
+              default: OK
+            timestamp:
+              type: number
+    SuccessfulNotification:
+      type: object
+      properties:
+        statusCode:
+          type: number
+          default: 200
+        payload:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            title:
+              type: string
+            shortDescription:
+              type: string
+            description:
+              type: string
+              nullable: true
+            timestamp:
+              type: string
+              format: date-time
+    Unauthorized:
+      type: object
+      properties:
+        userId:
+          type: string
+          nullable: true
+          default: null
+        message:
+          type: string
+          default: Requires authentication
+
+  # Response types
+  responses:
+    Forbidden:
+      description: User does not have access
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Forbidden'
+    GeneralError:
+      description: Server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GeneralError'
+    ListOfNotifications:
+      description: A JSON array of user's notifications
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              0:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Notification'
+    NotFound:
+      description: Could not find resource
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/NotFound'
+    ServerUnavailable:
+      description: API server cannot handle requests
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ServerUnavailable'
+    SuccessfulNotification:
+      description: Information of sent push Notification
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SuccessfulNotification'
+    Unauthorized:
+      description: User is not authorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Unauthorized'

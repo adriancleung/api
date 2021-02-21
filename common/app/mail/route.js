@@ -7,6 +7,16 @@ const { sendMail } = require('@app/mail/util');
 const { saveMail, getAllMail } = require('@db/mail');
 const { errorMsg } = require('@util/error');
 
+router.get('/', checkAuthorization, (req, res) => {
+  getAllMail()
+    .then(results => res.status(SUCCESS_CODE).send({ mail: results }))
+    .catch(err =>
+      res
+        .status(SERVER_ERROR)
+        .send(errorMsg(SERVER_ERROR, 'Cannot retrieve mail', err))
+    );
+});
+
 router.post('/', async (req, res) => {
   const emailBody = {
     firstName: req.body.firstName,
@@ -50,16 +60,6 @@ router.post('/', async (req, res) => {
           .send(errorMsg(SERVER_ERROR, 'Could not send mail', err))
       );
   }
-});
-
-router.get('/', checkAuthorization, (req, res) => {
-  getAllMail()
-    .then(results => res.status(SUCCESS_CODE).send({ mail: results }))
-    .catch(err =>
-      res
-        .status(SERVER_ERROR)
-        .send(errorMsg(SERVER_ERROR, 'Cannot retrieve mail', err))
-    );
 });
 
 module.exports = router;

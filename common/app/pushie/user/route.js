@@ -20,6 +20,28 @@ router.get('/', (req, res) => {
     );
 });
 
+router.post('/', (req, res) => {
+  createUser(req.uid, req.body.email)
+    .then(apiKey => res.status(SUCCESS_CODE).send(apiKey))
+    .catch(err => {
+      res
+        .status(SERVER_ERROR)
+        .send(errorMsg(SERVER_ERROR, 'Could not create user', err));
+    });
+});
+
+router.delete('/', (req, res) => {
+  deleteUserNotification(req.uid, req.body)
+    .then(() => res.sendStatus(SUCCESS_CODE))
+    .catch(err =>
+      res
+        .status(SERVER_ERROR)
+        .send(
+          errorMsg(SERVER_ERROR, "Could not delete user's notification", err)
+        )
+    );
+});
+
 router.get('/api', (req, res) => {
   getUserApiKey(req.uid)
     .then(results => res.status(SUCCESS_CODE).send(results))
@@ -38,28 +60,6 @@ router.post('/api', (req, res) => {
         .status(SERVER_ERROR)
         .send(errorMsg(SERVER_ERROR, 'Could not refresh api key', err))
     );
-});
-
-router.delete('/', (req, res) => {
-  deleteUserNotification(req.uid, req.body)
-    .then(() => res.sendStatus(SUCCESS_CODE))
-    .catch(err =>
-      res
-        .status(SERVER_ERROR)
-        .send(
-          errorMsg(SERVER_ERROR, "Could not delete user's notification", err)
-        )
-    );
-});
-
-router.post('/', (req, res) => {
-  createUser(req.uid, req.body.email)
-    .then(apiKey => res.status(SUCCESS_CODE).send(apiKey))
-    .catch(err => {
-      res
-        .status(SERVER_ERROR)
-        .send(errorMsg(SERVER_ERROR, 'Could not create user', err));
-    });
 });
 
 module.exports = router;
