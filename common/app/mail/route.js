@@ -2,10 +2,24 @@ const express = require('express');
 const router = express.Router();
 const { checkAuthorization } = require('@auth');
 const { authorization } = require('@auth/googleAuth');
-const { SUCCESS_CODE, SERVER_ERROR } = require('@constants');
+const { AUTH_TYPES, SUCCESS_CODE, SERVER_ERROR } = require('@constants');
 const { sendMail } = require('@app/mail/util');
 const { saveMail, getAllMail } = require('@db/mail');
 const { errorMsg } = require('@util/error');
+
+router.get(
+  '/',
+  checkAuthorization([AUTH_TYPES.API, AUTH_TYPES.JWT]),
+  (req, res) => {
+    getAllMail()
+      .then(results => res.status(SUCCESS_CODE).send({ mail: results }))
+      .catch(err =>
+        res
+          .status(SERVER_ERROR)
+          .send(errorMsg(SERVER_ERROR, 'Cannot retrieve mail', err))
+      );
+  }
+);
 
 router.post('/', async (req, res) => {
   const emailBody = {
@@ -50,16 +64,6 @@ router.post('/', async (req, res) => {
           .send(errorMsg(SERVER_ERROR, 'Could not send mail', err))
       );
   }
-});
-
-router.get('/', checkAuthorization, (req, res) => {
-  getAllMail()
-    .then(results => res.status(SUCCESS_CODE).send({ mail: results }))
-    .catch(err =>
-      res
-        .status(SERVER_ERROR)
-        .send(errorMsg(SERVER_ERROR, 'Cannot retrieve mail', err))
-    );
 });
 
 module.exports = router;

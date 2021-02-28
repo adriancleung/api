@@ -1,13 +1,17 @@
 {
   "name": "adriancleung-api",
-  "version": "1.7.0",
-  "description": "",
+  "version": "1.7.1",
+  "description": "An API server for Adrian Leung's services.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon index.js"
   },
-  "author": "",
+  "author": {
+    "name": "Adrian Leung",
+    "email": "contact@adrianleung.dev",
+    "url": "https://adrianleung.dev"
+  },
   "license": "MIT",
   "dependencies": {
     "axios": "^0.21.1",
@@ -31,6 +35,8 @@
     "node-cron": "^2.0.3",
     "serve-favicon": "^2.5.0",
     "supertest": "^6.0.1",
+    "swagger-jsdoc": "^6.0.6",
+    "swagger-ui-express": "^4.1.6",
     "uuid": "^8.3.0",
     "yaml": "^1.10.0"
   },

@@ -3,7 +3,7 @@ const os = require('os');
 const { init: initializeTasks } = require('@tasks/init');
 const { init: app } = require('./app');
 
-if (cluster.isMaster) {
+if (cluster.isMaster && process.env.NODE_ENV !== 'development') {
   const cpus = os.cpus().length;
 
   for (let i = 0; i < cpus; i++) {

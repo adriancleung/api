@@ -11,6 +11,16 @@ const generateApiKey = () => {
   return encode(uuidv4().replace(/-/g, ''));
 };
 
+router.get('/', (req, res) => {
+  getAllApiKeys()
+    .then(results => res.status(SUCCESS_CODE).send({ data: results }))
+    .catch(err =>
+      res
+        .status(SERVER_ERROR)
+        .send(errorMsg(SERVER_ERROR, 'Could not get API keys', err))
+    );
+});
+
 router.post('/', (req, res) => {
   const apiKey = generateApiKey();
   addApiKey(apiKey)
@@ -19,16 +29,6 @@ router.post('/', (req, res) => {
       res
         .status(SERVER_ERROR)
         .send(errorMsg(SERVER_ERROR, 'Could not generate API key', err))
-    );
-});
-
-router.get('/', (req, res) => {
-  getAllApiKeys()
-    .then(results => res.status(SUCCESS_CODE).send({ data: results }))
-    .catch(err =>
-      res
-        .status(SERVER_ERROR)
-        .send(errorMsg(SERVER_ERROR, 'Could not get API keys', err))
     );
 });
 

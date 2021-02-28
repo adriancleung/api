@@ -13,16 +13,6 @@ router.all('/', (req, res) => {
   return res.sendStatus(RESOURCE_NOT_FOUND);
 });
 
-router.post('/signup', (req, res) => {
-  signup(req.body.userName, req.body.password)
-    .then(() => res.sendStatus(SUCCESS_CODE))
-    .catch(err => {
-      res
-        .status(SERVER_ERROR)
-        .send(errorMsg(SERVER_ERROR, 'Could not sign up user', err));
-    });
-});
-
 router.post('/login', (req, res) => {
   login(req.body.email, req.body.password)
     .then(value => {
@@ -32,6 +22,16 @@ router.post('/login', (req, res) => {
       res
         .status(SERVER_ERROR)
         .send(errorMsg(SERVER_ERROR, 'Could not login user', err));
+    });
+});
+
+router.post('/signup', (req, res) => {
+  signup(req.body.email, req.body.password)
+    .then(() => res.sendStatus(SUCCESS_CODE))
+    .catch(err => {
+      res
+        .status(SERVER_ERROR)
+        .send(errorMsg(SERVER_ERROR, 'Could not sign up user', err));
     });
 });
 
