@@ -30,6 +30,16 @@ router.post('/', (req, res) => {
     });
 });
 
+router.post('/api', (req, res) => {
+  refreshApiKey(req.uid)
+    .then(results => res.status(SUCCESS_CODE).send(results))
+    .catch(err =>
+      res
+        .status(SERVER_ERROR)
+        .send(errorMsg(SERVER_ERROR, 'Could not refresh api key', err))
+    );
+});
+
 router.delete('/', (req, res) => {
   deleteUserNotification(req.uid, req.body)
     .then(() => res.sendStatus(SUCCESS_CODE))

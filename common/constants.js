@@ -44,6 +44,7 @@ const ECLASS_STATUS_TEXT = {
   minor: 'Minor Issues',
   major: 'Major Issues',
   critical: 'Critical Issues',
+  maintenance: 'Under Maintenance',
 };
 
 const ECLASS_EMBED_COLOURS = {
@@ -51,6 +52,7 @@ const ECLASS_EMBED_COLOURS = {
   minor: 15844367,
   major: 15105570,
   critical: 15158332,
+  maintenance: 3447003,
 };
 
 const OPENAPI_OPTIONS = {
