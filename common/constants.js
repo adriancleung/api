@@ -10,6 +10,13 @@ const {
 const GMAIL_SCOPES = ['https://www.googleapis.com/auth/gmail.send'];
 const YOUTUBE_SCOPES = ['https://www.googleapis.com/auth/youtube.force-ssl'];
 
+const AUTH_TYPES = {
+  JWT: 'x-access-token',
+  API: 'x-api-key',
+  PUSHIE_JWT: 'authorization',
+  PUSHIE_API: 'pushie-api-key',
+};
+
 const CORS_OPTIONS = {
   origin: '*',
   optionsSuccessStatus: 200,
@@ -92,6 +99,7 @@ module.exports = {
   version,
   GMAIL_SCOPES,
   YOUTUBE_SCOPES,
+  AUTH_TYPES,
   CORS_OPTIONS,
   RATE_LIMITER,
   ROOT_DIR,

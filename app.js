@@ -24,6 +24,7 @@ const {
   RATE_LIMITER,
   OPENAPI_OPTIONS,
   SWAGGER_UI_OPTIONS,
+  AUTH_TYPES,
 } = require('@constants');
 const { apiLogging } = require('@util/logging');
 require('@util/logging').consoleLogging;
@@ -51,11 +52,11 @@ const init = () => {
 
   // Routes
   app.use('/about', about);
-  app.use('/api', checkAuthorization, api);
+  app.use('/api', checkAuthorization([AUTH_TYPES.API, AUTH_TYPES.JWT]), api);
   app.use('/auth', auth);
   app.use('/brew-coffee', brewCoffee);
   app.use('/mail', mail);
-  app.use('/pushie', checkAuthorization, pushie);
+  app.use('/pushie', pushie);
   app.use('/resume', resume);
   app.use('/status', status);
   app.use(
