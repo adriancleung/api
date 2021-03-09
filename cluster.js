@@ -1,12 +1,11 @@
 const cluster = require('cluster');
-const os = require('os');
 const { init: initializeTasks } = require('@tasks/init');
 const { init: app } = require('./app');
 
 if (cluster.isMaster && process.env.NODE_ENV !== 'development') {
-  const cpus = os.cpus().length;
+  const WORKERS = process.env.WEB_CONCURRENCY || 1;
 
-  for (let i = 0; i < cpus; i++) {
+  for (let i = 0; i < WORKERS; i++) {
     cluster.fork();
   }
 
@@ -22,7 +21,7 @@ if (cluster.isMaster && process.env.NODE_ENV !== 'development') {
     }
   });
 
-  console.log(`Master PID: ${process.pid} Workers: ${cpus}`);
+  console.log(`Master PID: ${process.pid} Workers: ${WORKERS}`);
   initializeTasks();
 } else {
   app();
