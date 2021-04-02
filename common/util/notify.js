@@ -1,10 +1,10 @@
 const { admin } = require('@db/init');
 const { storeUserNotifications, getUserDeviceToken } = require('@db/pushie');
 
-const notify = async (uid, title, shortDescription, decription) => {
+const notify = async (uid, title, shortDescription, decription, label) => {
   try {
-    const token = await getUserDeviceToken(uid);
-    if (token === undefined) {
+    const tokens = await getUserDeviceToken(uid);
+    if (tokens === undefined) {
       throw new Error(
         'No user device token found. Please logout of pushie and log back in.'
       );
@@ -13,14 +13,15 @@ const notify = async (uid, title, shortDescription, decription) => {
       uid,
       title,
       shortDescription,
-      decription
+      decription,
+      label
     );
-    await admin.messaging().send({
+    await admin.messaging().sendMulticast({
       notification: {
         title: title,
         body: shortDescription,
       },
-      token: token,
+      tokens: tokens,
       apns: {
         payload: {
           aps: {

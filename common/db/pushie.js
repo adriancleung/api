@@ -12,7 +12,7 @@ const createUser = async (uid, email) => {
       apiKey,
       createdAt: FieldValue.serverTimestamp(),
       email,
-      token: '',
+      tokens: [],
       notifications: [],
     });
     return apiKey;
@@ -25,7 +25,7 @@ const createUser = async (uid, email) => {
 const getUserDeviceToken = async uid => {
   try {
     const docRef = await collectionRef.doc(uid).get();
-    return docRef.get('token');
+    return docRef.get('tokens');
   } catch (err) {
     console.error(err);
     throw new Error(`${err.name}: ${err.message}`);
@@ -35,7 +35,7 @@ const getUserDeviceToken = async uid => {
 const storeUserDeviceToken = async (uid, token) => {
   try {
     await collectionRef.doc(uid).update({
-      token,
+      tokens: FieldValue.arrayUnion(token),
     });
   } catch (err) {
     console.error(err);
@@ -65,10 +65,16 @@ const storeUserNotifications = async (
   description
 ) => {
   if (title === undefined) {
-    throw new Error('Notification title is missing. Please provide a title');
-  } else if (shortDescription === undefined) {
+    throw new Error('Notification title is missing. Please provide a title.');
+  }
+  if (shortDescription === undefined) {
     throw new Error(
-      'Notification short description is missing. Please provide a short desciption'
+      'Notification short description is missing. Please provide a short desciption.'
+    );
+  }
+  if (label && label.length > 30) {
+    throw new Error(
+      'Label cannot be longer than 30 characters. Please shorten your label name.'
     );
   }
   try {
@@ -80,6 +86,7 @@ const storeUserNotifications = async (
         title,
         shortDescription,
         description: description ? description : null,
+        label: label ? label : null,
         timestamp,
       }),
     });
@@ -88,6 +95,7 @@ const storeUserNotifications = async (
       title,
       shortDescription,
       description,
+      label,
       timestamp: getDateTimeFromTimestamp(timestamp),
     };
   } catch (err) {
@@ -105,6 +113,7 @@ const deleteUserNotification = async (uid, item) => {
         title: item.title,
         shortDescription: item.shortDescription,
         description: item.description,
+        label: item.label,
         timestamp: Timestamp.fromDate(new Date(item.timestamp)),
       }),
     });
@@ -132,7 +141,7 @@ const refreshApiKey = async uid => {
       const results = await searchForUID('apiKey', apiKey);
       if (!results) {
         break;
-      }  
+      }
     } catch (err) {
       console.error(err);
       throw new Error(`${err.name}: ${err.message}`);
