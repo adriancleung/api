@@ -62,7 +62,8 @@ const storeUserNotifications = async (
   uid,
   title,
   shortDescription,
-  description
+  description,
+  label
 ) => {
   if (title === undefined) {
     throw new Error('Notification title is missing. Please provide a title.');
