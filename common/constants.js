@@ -55,6 +55,14 @@ const ECLASS_EMBED_COLOURS = {
   maintenance: 3447003,
 };
 
+const TWEET_KEYWORDS = [
+  'doge',
+  'dogecoin',
+  'moon',
+  'shiba',
+  'shiba inu',
+];
+
 const OPENAPI_OPTIONS = {
   definition: {
     openapi: '3.0.3',
@@ -115,6 +123,7 @@ module.exports = {
   SERVER_UNAVAILABLE,
   ECLASS_STATUS_TEXT,
   ECLASS_EMBED_COLOURS,
+  TWEET_KEYWORDS,
   OPENAPI_OPTIONS,
   SWAGGER_UI_OPTIONS,
 };
