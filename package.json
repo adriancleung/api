@@ -1,6 +1,6 @@
 {
   "name": "adriancleung-api",
-  "version": "1.7.2",
+  "version": "1.8.0",
   "description": "An API server for Adrian Leung's services.",
   "main": "index.js",
   "scripts": {
