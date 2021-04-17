@@ -16,7 +16,8 @@
                 "<node_internals>/**"
             ],
             "type": "node",
-            "console": "integratedTerminal"
+            "console": "integratedTerminal",
+            "envFile": "${workspaceFolder}/.env"
         },
         {
             "type": "node",

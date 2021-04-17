@@ -25,8 +25,8 @@ const endpoint = async () => {
     }
   );
 
-  const tweetId = res.data[0].id;
-  const tweet = res.data[0].id;
+  const tweetId = res.data.data[0].id;
+  const tweet = res.data.data[0].text;
   if (previousTweetId !== tweetId) {
     if (TWEET_KEYWORDS.some(keyword => tweet.toLowerCase().includes(keyword))) {
       await notify(process.env.uid, 'Elon tweeted about Dogecoin! 🐶', tweet);
