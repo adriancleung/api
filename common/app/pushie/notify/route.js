@@ -9,7 +9,8 @@ router.post('/', async (req, res) => {
     req.uid,
     req.body.title,
     req.body.shortDescription,
-    req.body.description
+    req.body.description,
+    req.body.label
   )
     .then(value =>
       res

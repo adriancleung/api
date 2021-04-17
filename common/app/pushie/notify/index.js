@@ -21,6 +21,9 @@
  *              description:
  *                type: string
  *                nullable: true
+ *              label:
+ *                type: string
+ *                nullable: true
  *    responses:
  *      200:
  *        $ref: '#/components/responses/SuccessfulNotification'

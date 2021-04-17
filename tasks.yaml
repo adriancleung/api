@@ -8,3 +8,6 @@ tasks:
   eclass_status:
     module: common.tasks.eclass-status.handler.endpoint
     schedule: '*/5 * * * *'
+  elon_tweeting:
+    module: common.tasks.elon-tweeting.handler.endpoint
+    schedule: '1-59/5 * * * *'
