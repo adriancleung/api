@@ -12,26 +12,51 @@ const endpoint = async () => {
   const previousTweetId = await getData('previousTweetId');
 
   if (previousTweetId === null) {
-    await storeData('previousTweetId', 'none');
+    storeData('previousTweetId', 'none');
     return;
   }
 
-  const res = await axios.get(
-    'https://api.twitter.com/2/users/44196397/tweets?exclude=replies&max_results=5',
-    {
-      headers: {
-        Authorization: `Bearer ${process.env.TWITTER_API_BEARER}`,
-      },
-    }
-  );
+  try {
+    const res = await axios.get(
+      'https://api.twitter.com/2/users/44196397/tweets?exclude=replies&max_results=5',
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.TWITTER_API_BEARER}`,
+        },
+      }
+    );
 
-  const tweetId = res.data.data[0].id;
-  const tweet = res.data.data[0].text;
-  if (previousTweetId !== tweetId) {
-    if (TWEET_KEYWORDS.some(keyword => tweet.toLowerCase().includes(keyword))) {
-      await notify(process.env.uid, 'Elon tweeted about Dogecoin! 🐶', tweet);
+    if (res.data.data === undefined) {
+      console.warn(
+        `Query did not return any data\nResponse Code: ${res.status}\nData: ${res.data}`
+      );
+      return;
     }
-    await storeData('previousTweetId', tweetId);
+    const tweetId = res.data.data[0].id;
+    const tweet = res.data.data[0].text;
+    if (previousTweetId !== tweetId) {
+      if (
+        TWEET_KEYWORDS.some(keyword => tweet.toLowerCase().includes(keyword))
+      ) {
+        notify(
+          process.env.uid,
+          'Elon tweeted about Dogecoin! 🐶',
+          tweet,
+          undefined,
+          'Twitter'
+        );
+      }
+      storeData('previousTweetId', tweetId);
+    }
+  } catch (err) {
+    console.error('Could not retrieve tweets', err);
+    notify(
+      process.env.uid,
+      'Could not retrieve tweets',
+      err.message,
+      err.stack,
+      'Twitter'
+    );
   }
 };
 

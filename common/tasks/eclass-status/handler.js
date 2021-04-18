@@ -10,7 +10,7 @@ const endpoint = async () => {
     const previousStatus = await getData('previousEClassStatus');
     
     if (previousStatus === null) {
-      await storeData('previousEClassStatus', 'none');
+      storeData('previousEClassStatus', 'none');
       return;
     }
 
@@ -22,7 +22,7 @@ const endpoint = async () => {
       const description = res.data.status.description;
       const url = res.data.page.url;
       const update_time = stringDateTimeFormat(res.data.page.updated_at);
-      await axios.post(
+      axios.post(
         process.env.discord_eclass_webhook,
         {
           embeds: [
@@ -44,7 +44,7 @@ const endpoint = async () => {
           },
         }
       );
-      await storeData('previousEClassStatus', status);
+      storeData('previousEClassStatus', status);
     }
   }
 };
