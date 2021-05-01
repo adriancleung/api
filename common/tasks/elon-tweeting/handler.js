@@ -28,7 +28,9 @@ const endpoint = async () => {
 
     if (res.data.data === undefined) {
       console.warn(
-        `Query did not return any data\nResponse Code: ${res.status}\nData: ${res.data}`
+        `Query did not return any data\nResponse Code: ${
+          res.status
+        }\nData: ${JSON.stringify(res.data)}`
       );
       return;
     }

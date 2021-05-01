@@ -86,7 +86,10 @@ const endpoint = async () => {
     return;
   }
 
-  if (value === SUCCESS_CODE) {
+  if (
+    value.status === SUCCESS_CODE &&
+    value.data.status.privacyStatus === 'private'
+  ) {
     console.info(`Video ${res.data.items[0].id.videoId} made private`);
     notify(
       process.env.uid,
