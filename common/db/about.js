@@ -11,6 +11,18 @@ const getAboutContent = async () => {
   }
 };
 
+const updateAboutContent = async content => {
+  try {
+    await collectionRef.doc('about').set({
+      src: content,
+    });
+    return { statusCode: SUCCESS_CODE, body: 'About content updated' };
+  } catch (err) {
+    return { statusCode: SERVER_ERROR, body: 'Could not update about content' };
+  }
+};
+
 module.exports = {
   getAboutContent,
+  updateAboutContent,
 };
