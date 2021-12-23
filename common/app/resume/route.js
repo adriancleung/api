@@ -24,7 +24,18 @@ router.post(
 
 router.get('/', (req, res) => {
   getResume()
-    .then(results => res.status(results.statusCode).send(results.body))
+    .then(results => {
+      const binary = Buffer.from(results.body, 'base64');
+      res.setHeader('Content-Length', Buffer.byteLength(binary));
+      res.setHeader('Content-Type', 'application/pdf');
+      if (req.query.download === 'true') {
+        res.setHeader(
+          'Content-Disposition',
+          'attachment;filename="Resume_AdrianLeung.pdf"'
+        );
+      }
+      res.status(results.statusCode).send(binary);
+    })
     .catch(err =>
       res
         .status(SERVER_ERROR)
