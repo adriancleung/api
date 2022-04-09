@@ -13,7 +13,10 @@ router.post(
 );
 router.post(
   '/register',
-  validate([body('email').custom(isValidUser), body('password').isString()]),
+  validate([
+    body('email').isEmail().bail().custom(isValidUser),
+    body('password').isString(),
+  ]),
   register
 );
 router.post('/verify', verify);

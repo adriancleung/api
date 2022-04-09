@@ -12,7 +12,7 @@ router.get('/', getAbout);
 router.post(
   '/',
   [
-    authorization([AuthType.JWT, AuthType.API]),
+    authorization(AuthType.JWT, AuthType.API),
     validate([body('content').isString()]),
   ],
   updateAbout

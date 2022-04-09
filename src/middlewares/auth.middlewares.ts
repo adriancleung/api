@@ -5,20 +5,17 @@ import { AuthType, JwtPayload } from '../types/auth';
 import { AuthenticatedRequest } from '../types/request';
 import { ApiResponseCode } from '../types/response';
 
-const authorization = (authType: AuthType | AuthType[]): RequestHandler => {
+const authorization = (...authType: AuthType[]): RequestHandler => {
   return async (
     req: AuthenticatedRequest,
     res: Response,
     next: NextFunction
   ) => {
-    if (!Array.isArray(authType)) {
-      const authValue = req.headers[authType];
+    for (const type of authType) {
+      const authValue = req.headers[type];
 
       if (!authValue) {
-        res
-          .status(ApiResponseCode.UNAUTHORIZED)
-          .send({ message: 'Requires authorization' });
-        return;
+        continue;
       }
 
       if (Array.isArray(authValue)) {
@@ -28,34 +25,14 @@ const authorization = (authType: AuthType | AuthType[]): RequestHandler => {
         return;
       }
 
-      if (await validateAuthorization(authType, authValue, req, res)) {
+      if (await validateAuthorization(type, authValue, req, res)) {
         next();
         return;
       }
-    } else {
-      for (const type of authType) {
-        const authValue = req.headers[type];
-
-        if (!authValue) {
-          continue;
-        }
-
-        if (Array.isArray(authValue)) {
-          res
-            .send(ApiResponseCode.CLIENT_ERROR)
-            .send({ message: 'Authorization invalid' });
-          return;
-        }
-
-        if (await validateAuthorization(type, authValue, req, res)) {
-          next();
-          return;
-        }
-      }
-      res
-        .status(ApiResponseCode.UNAUTHORIZED)
-        .send({ message: 'Requires authentication' });
     }
+    res
+      .status(ApiResponseCode.UNAUTHORIZED)
+      .send({ message: 'Requires authentication' });
   };
 };
 

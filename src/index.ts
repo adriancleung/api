@@ -13,6 +13,7 @@ import { logging } from './middlewares/logging.middlewares';
 
 import about from './routes/about.routes';
 import auth from './routes/auth.routes';
+import mails from './routes/mail.routes';
 import resume from './routes/resume.routes';
 import users from './routes/user.routes';
 
@@ -34,6 +35,7 @@ app.use((_req, res, next) => {
 
 app.use('/about', about);
 app.use(auth);
+app.use('/mails', mails);
 app.use('/users', users);
 app.use('/resume', resume);
 

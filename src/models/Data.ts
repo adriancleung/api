@@ -10,6 +10,12 @@ class Data extends Model {
 
 Data.init(
   {
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      allowNull: false,
+      primaryKey: true,
+    },
     key: {
       type: DataTypes.STRING,
       allowNull: false,

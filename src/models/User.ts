@@ -1,4 +1,4 @@
-import { DataTypes, HasMany, Model } from 'sequelize';
+import { DataTypes, FindOptions, HasMany, Model } from 'sequelize';
 import { v4 as uuidv4 } from 'uuid';
 import db from '../db';
 import { Role } from '../types/role';
@@ -9,12 +9,13 @@ class User extends Model {
   declare apiKey: string;
   declare email: string;
   declare passwordHash: string;
-  declare tokens: string;
+  declare tokens: string[];
   declare role: Role;
   declare notifications: Notification[];
   static Notification: HasMany;
   declare addNotification: (notification: Notification) => Promise<void>;
   declare removeNotification: (notification: Notification) => Promise<void>;
+  declare getNotifications: (options?: FindOptions) => Promise<Notification[]>;
   declare hasNotification: (notification: Notification) => Promise<boolean>;
 }
 
@@ -53,10 +54,11 @@ User.init(
     },
   },
   {
-    defaultScope: { attributes: ['id', 'email', 'apiKey', 'role'] },
+    defaultScope: { attributes: ['id', 'email', 'apiKey', 'tokens', 'role'] },
     sequelize: db,
     modelName: 'User',
     underscored: true,
+    paranoid: true,
   }
 );
 

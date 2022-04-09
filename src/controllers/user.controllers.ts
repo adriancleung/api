@@ -1,11 +1,14 @@
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import User from '../models/User';
-import { AuthenticatedRequest } from '../types/request';
+import { AuthenticatedRequest, UserRequest } from '../types/request';
 import { ApiResponseCode } from '../types/response';
 
-const deleteUserProfile = async (req: AuthenticatedRequest, res: Response) => {
+const deleteUserProfile = async (
+  req: AuthenticatedRequest & UserRequest,
+  res: Response
+) => {
   try {
-    await User.destroy({ where: { id: req.params.user_id } });
+    await req.user.destroy();
   } catch (err) {
     console.error(err);
     res.status(ApiResponseCode.SERVER_ERROR).send({ message: err });
@@ -14,10 +17,13 @@ const deleteUserProfile = async (req: AuthenticatedRequest, res: Response) => {
   res.sendStatus(ApiResponseCode.SUCCESS);
 };
 
-const editUserProfile = (req: AuthenticatedRequest, res: Response) => {
+const editUserProfile = async (
+  req: AuthenticatedRequest & UserRequest,
+  res: Response
+) => {
   const { email } = req.body;
   try {
-    User.update({ email: email }, { where: { id: req.params.user_id } });
+    await req.user.update({ email: email });
   } catch (err) {
     console.error(err);
     res.status(ApiResponseCode.SERVER_ERROR).send({ message: err });
@@ -25,13 +31,13 @@ const editUserProfile = (req: AuthenticatedRequest, res: Response) => {
   res.sendStatus(ApiResponseCode.SUCCESS);
 };
 
-const getUserProfile = async (req: Request, res: Response) => {
-  const user = await User.findByPk(req.params.user_id);
-  if (user === null) {
-    res.sendStatus(ApiResponseCode.RESOURCE_NOT_FOUND);
-    return;
-  }
-  res.status(ApiResponseCode.SUCCESS).send(user);
+const getAllUsers = async (req: AuthenticatedRequest, res: Response) => {
+  const users = await User.unscoped().findAll();
+  res.status(ApiResponseCode.SUCCESS).send(users);
 };
 
-export { deleteUserProfile, editUserProfile, getUserProfile };
+const getUserProfile = async (req: UserRequest, res: Response) => {
+  res.status(ApiResponseCode.SUCCESS).send(req.user);
+};
+
+export { deleteUserProfile, editUserProfile, getAllUsers, getUserProfile };

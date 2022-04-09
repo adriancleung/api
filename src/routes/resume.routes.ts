@@ -16,7 +16,7 @@ router.get(
 );
 router.post(
   '/',
-  [authorization([AuthType.JWT, AuthType.API]), multer().single('resume')],
+  [authorization(AuthType.JWT, AuthType.API), multer().single('resume')],
   updateResume
 );
 

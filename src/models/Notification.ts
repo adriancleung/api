@@ -33,7 +33,15 @@ Notification.init(
       allowNull: true,
     },
   },
-  { sequelize: db, modelName: 'Notifcation', underscored: true }
+  {
+    defaultScope: {
+      attributes: ['id', 'title', 'shortDescription', 'description'],
+    },
+    sequelize: db,
+    modelName: 'Notification',
+    underscored: true,
+    paranoid: true,
+  }
 );
 
 export default Notification;
