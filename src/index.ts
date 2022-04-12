@@ -7,8 +7,8 @@ import compression from 'compression';
 import db from './db';
 db.sync({ alter: true });
 
-import tasks from './tasks';
-tasks.init();
+import Tasks from './tasks';
+Tasks.init();
 
 import { CORS_OPTIONS, RATE_LIMITER } from './constants';
 

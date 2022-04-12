@@ -1,5 +1,28 @@
 import Notification from '../models/Notification';
+import User from '../models/User';
 import { admin } from '../services/firebase.services';
+
+const createAndSendUserNotification = async (
+  userId: string,
+  title: string,
+  shortDescription: string,
+  description?: string,
+  labels?: string[]
+) => {
+  try {
+    const user = await User.findByPk(userId);
+    const notification = await Notification.create({
+      title: title,
+      shortDescription: shortDescription,
+      ...(description && { description: description }),
+      ...(labels && { labels: labels }),
+    });
+    await user.addNotification(notification);
+    await sendNotification(user.tokens, notification);
+  } catch (err) {
+    console.error('Could not create and send notification', err);
+  }
+};
 
 const sendNotification = async (
   tokens: string[],
@@ -30,4 +53,4 @@ const sendNotification = async (
   }
 };
 
-export { sendNotification };
+export { createAndSendUserNotification, sendNotification };

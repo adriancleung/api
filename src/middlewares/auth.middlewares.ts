@@ -27,8 +27,8 @@ const authorization = (...authType: AuthType[]): RequestHandler => {
 
       if (await validateAuthorization(type, authValue, req, res)) {
         next();
-        return;
       }
+      return;
     }
     res
       .status(ApiResponseCode.UNAUTHORIZED)

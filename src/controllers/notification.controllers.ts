@@ -23,7 +23,7 @@ const addUserNotification = async (
     });
     await req.user.addNotification(notification);
     if (req.user.tokens) {
-      await sendNotification(req.user.tokens, notification);
+      sendNotification(req.user.tokens, notification);
     }
     res.status(ApiResponseCode.SUCCESS).send({ notification: notification });
     return;

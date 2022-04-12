@@ -1,3 +1,4 @@
+import { createAndSendUserNotification } from '../../handlers/notification.handlers';
 import { youtube } from '../../services/google.services';
 import { ApiResponseCode } from '../../types/response';
 
@@ -15,12 +16,17 @@ const endpoint = async () => {
       part: ['snippet'],
       forMine: true,
       order: 'date',
-      q: 'SMW',
+      q: 'ECCC English Worship',
       type: ['video'],
     });
 
     if (res.status !== ApiResponseCode.SUCCESS) {
       console.warn('Could not retrieve videos', res.data);
+      createAndSendUserNotification(
+        process.env.UID,
+        'Could not retrieve videos',
+        JSON.stringify(res.data)
+      );
       return;
     }
 
@@ -29,6 +35,11 @@ const endpoint = async () => {
       Object.keys(res.data.items).length === 0
     ) {
       console.warn('No videos found');
+      createAndSendUserNotification(
+        process.env.UID,
+        'No videos found',
+        'Could not find any videos to private'
+      );
       return;
     }
 
@@ -54,16 +65,38 @@ const endpoint = async () => {
         value.data.status.privacyStatus === 'private'
       ) {
         console.info(`Video ${res.data.items[0].id.videoId} made private`);
+        createAndSendUserNotification(
+          process.env.UID,
+          'Video made private',
+          `Video ${res.data.items[0].id.videoId} was made private`
+        );
         return;
       }
       console.warn('Could not update video privacy', value.data);
+      createAndSendUserNotification(
+        process.env.UID,
+        'Could not private video',
+        `Could not make video ${res.data.items[0].id.videoId} private. Please private video manually`
+      );
       return;
     } catch (err) {
       console.error('Error updating video privacy', err);
+      createAndSendUserNotification(
+        process.env.UID,
+        'Could not private video',
+        err.message,
+        err.stack
+      );
       return;
     }
   } catch (err) {
     console.error('Error retrieving latest SMW videos', err);
+    createAndSendUserNotification(
+      process.env.UID,
+      'Error retrieving latest SMW videos',
+      err.message,
+      err.stack
+    );
   }
 };
 

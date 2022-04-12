@@ -32,10 +32,15 @@ Notification.init(
       type: DataTypes.STRING,
       allowNull: true,
     },
+    labels: {
+      type: DataTypes.ARRAY(DataTypes.STRING),
+      defaultValue: [],
+      allowNull: true,
+    },
   },
   {
     defaultScope: {
-      attributes: ['id', 'title', 'shortDescription', 'description'],
+      attributes: ['id', 'title', 'shortDescription', 'description', 'labels'],
     },
     sequelize: db,
     modelName: 'Notification',

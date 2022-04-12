@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { createAndSendUserNotification } from '../../handlers/notification.handlers';
 import { getData, storeData } from '../../utilities/redis';
 
 const schedule = '*/5 * * * *';
@@ -37,25 +38,22 @@ const endpoint = async () => {
 
     if (previousTweetId !== tweetId) {
       if (KEYWORDS.some(keyword => tweet.toLowerCase().includes(keyword))) {
-        // notify(
-        //   process.env.uid,
-        //   'Elon tweeted about Dogecoin! 🐶',
-        //   tweet,
-        //   undefined,
-        //   'Twitter'
-        // );
+        createAndSendUserNotification(
+          process.env.UID,
+          'Elon tweeted about Dogecoin! 🐶',
+          tweet
+        );
       }
       storeData('previousTweetId', tweetId);
     }
   } catch (err) {
     console.error('Could not retrieve tweets', err);
-    // notify(
-    //   process.env.uid,
-    //   'Could not retrieve tweets',
-    //   err.message,
-    //   err.stack,
-    //   'Twitter'
-    // );
+    createAndSendUserNotification(
+      process.env.UID,
+      'Could not retrieve tweets',
+      err.message,
+      err.stack
+    );
   }
 };
 
