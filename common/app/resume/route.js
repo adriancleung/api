@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 const upload = multer();
+const { pdfToPng } = require('pdf-to-png-converter');
 
 const { checkAuthorization } = require('@auth');
 const { getResume, updateResume } = require('@db/resume');
@@ -27,14 +28,25 @@ router.get('/', (req, res) => {
     .then(results => {
       const binary = Buffer.from(results.body, 'base64');
       res.setHeader('Content-Length', Buffer.byteLength(binary));
-      res.setHeader('Content-Type', 'application/pdf');
-      if (req.query.download === 'true') {
-        res.setHeader(
-          'Content-Disposition',
-          'attachment;filename="Resume_AdrianLeung.pdf"'
-        );
+      if (req.query.image === 'png') {
+        res.setHeader('Content-Type', 'image/png');
+        pdfToPng(binary, {
+          disableFontFace: true,
+          useSystemFonts: false,
+          viewportScale: 2.0,
+          outputFileMask: './',
+          pages: [1],
+        }).then(value => res.status(results.statusCode).send(value[0].content));
+      } else {
+        res.setHeader('Content-Type', 'application/pdf');
+        if (req.query.download === 'true') {
+          res.setHeader(
+            'Content-Disposition',
+            'attachment;filename="Resume_AdrianLeung.pdf"'
+          );
+        }
+        res.status(results.statusCode).send(binary);
       }
-      res.status(results.statusCode).send(binary);
     })
     .catch(err =>
       res

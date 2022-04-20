@@ -34,6 +34,7 @@
     "morgan": "^1.10.0",
     "multer": "^1.4.4",
     "node-cron": "^2.0.3",
+    "pdf-to-png-converter": "^0.2.2",
     "pg": "^8.7.1",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.12.0-alpha.1",
