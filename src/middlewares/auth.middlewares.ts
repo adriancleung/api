@@ -56,10 +56,8 @@ const validateAuthorization = async (
 
     case AuthType.JWT:
       try {
-        const user = jwt.verify(
-          authValue,
-          process.env.JWT_SECRET
-        ) as JwtPayload;
+        const token = authValue.split(' ')[1];
+        const user = jwt.verify(token, process.env.JWT_SECRET) as JwtPayload;
         [req.userId, req.email, req.role] = [
           user.userId,
           user.email,

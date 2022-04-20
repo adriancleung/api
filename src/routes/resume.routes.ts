@@ -11,7 +11,10 @@ import { validate } from '../middlewares/validator.middleware';
 
 router.get(
   '/',
-  validate([query('download').equals('true').optional()]),
+  validate([
+    query('download').equals('true').optional(),
+    query('image').equals('png').optional(),
+  ]),
   getResume
 );
 router.post(

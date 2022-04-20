@@ -18,12 +18,13 @@ const refreshApiKey = async (
   const apiKey = await generateApiKey();
   try {
     await req.user.update({ apiKey: apiKey });
+    res.status(ApiResponseCode.SUCCESS).send({ apiKey: apiKey });
+    return;
   } catch (err) {
     console.error(err);
     res.status(ApiResponseCode.SERVER_ERROR).send({ message: err });
     return;
   }
-  res.sendStatus(ApiResponseCode.SUCCESS);
 };
 
 export { getApiKey, refreshApiKey };

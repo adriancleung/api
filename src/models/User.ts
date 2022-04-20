@@ -55,6 +55,11 @@ User.init(
   },
   {
     defaultScope: { attributes: ['id', 'email', 'apiKey', 'tokens', 'role'] },
+    scopes: {
+      limited: {
+        attributes: ['id', 'email', 'role'],
+      },
+    },
     sequelize: db,
     modelName: 'User',
     underscored: true,

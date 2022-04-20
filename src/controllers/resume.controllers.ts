@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { pdfToPng } from 'pdf-to-png-converter';
 import Data from '../models/Data';
 
 const getResume = async (req: Request, res: Response) => {
@@ -8,14 +9,26 @@ const getResume = async (req: Request, res: Response) => {
     return;
   }
   res.setHeader('Content-Length', Buffer.byteLength(resume.value));
-  res.setHeader('Content-Type', 'application/pdf');
-  if (req.query.download === 'true') {
-    res.setHeader(
-      'Content-Disposition',
-      'attachment;filename="Resume_AdrianLeung.pdf'
-    );
+  if (req.query.image === 'png') {
+    res.setHeader('Content-Type', 'image/png');
+    const image = await pdfToPng(resume.value, {
+      disableFontFace: true,
+      useSystemFonts: false,
+      viewportScale: 2.0,
+      outputFileMask: './',
+      pages: [1],
+    });
+    res.send(image[0].content);
+  } else {
+    res.setHeader('Content-Type', 'application/pdf');
+    if (req.query.download === 'true') {
+      res.setHeader(
+        'Content-Disposition',
+        'attachment;filename="Resume_AdrianLeung.pdf'
+      );
+    }
+    res.send(resume.value);
   }
-  res.send(resume.value);
 };
 
 const updateResume = async (req: Request, res: Response) => {

@@ -22,12 +22,13 @@ import {
 router.post(
   '/',
   [
-    authorization(AuthType.JWT),
+    authorization(AuthType.API),
     permit(Role.USER, Role.ADMIN),
     validate([
       body('title').isString(),
       body('shortDescription').isString(),
-      body('description').isString(),
+      body('description').isString().optional(),
+      body('label').isString().optional(),
     ]),
   ],
   addUserNotification
@@ -58,6 +59,7 @@ router.post(
       body('title').isString().optional(),
       body('shortDescription').isString().optional(),
       body('description').isString().optional(),
+      body('label').isString().optional(),
     ]),
   ],
   editUserNotification

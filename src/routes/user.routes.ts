@@ -37,7 +37,11 @@ router.use(
 
 router.get(
   '/:user_id',
-  validate([param('user_id').isUUID().bail().custom(userExists)]),
+  [
+    authorization(AuthType.JWT),
+    permit(Role.USER, Role.ADMIN),
+    validate([param('user_id').isUUID().bail().custom(userExists)]),
+  ],
   getUserProfile
 );
 router.post(

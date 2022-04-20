@@ -14,12 +14,13 @@ const addUserNotification = async (
   req: AuthenticatedRequest & UserRequest,
   res: Response
 ) => {
-  const { title, shortDescription, description } = req.body;
+  const { title, shortDescription, description, label } = req.body;
   try {
     const notification = await Notification.create({
       title: title,
       shortDescription: shortDescription,
-      description: description,
+      ...(description && { description: description }),
+      ...(label && { label: label }),
     });
     await req.user.addNotification(notification);
     if (req.user.tokens) {
@@ -52,12 +53,13 @@ const editUserNotification = async (
   req: AuthenticatedRequest & NotificationRequest,
   res: Response
 ) => {
-  const { title, shortDescription, description } = req.body;
+  const { title, shortDescription, description, label } = req.body;
   try {
     const notification = await req.notification.update({
       ...(title && { title: title }),
       ...(shortDescription && { shortDescription: shortDescription }),
       ...(description && { description: description }),
+      ...(label && { label: label }),
     });
     res.status(ApiResponseCode.SUCCESS).send({ notification: notification });
     return;
@@ -80,7 +82,7 @@ const getUserNotifications = async (
   res: Response
 ) => {
   const notifications = await req.user.getNotifications({
-    include: { model: User, as: 'user' },
+    include: { model: User.scope('limited'), as: 'user' },
   });
   res.status(ApiResponseCode.SUCCESS).send({ notifications: notifications });
 };

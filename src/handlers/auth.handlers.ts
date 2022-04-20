@@ -38,8 +38,7 @@ const loginUser = async (
   if (bcrypt.compareSync(password, user.passwordHash)) {
     const token = jwt.sign(
       { userId: user.id, email: user.email, role: user.role },
-      process.env.JWT_SECRET,
-      { expiresIn: 86400 }
+      process.env.JWT_SECRET
     );
     return {
       statusCode: ApiResponseCode.SUCCESS,

@@ -8,6 +8,7 @@ class Notification extends Model {
   declare title: string;
   declare shortDescription: string;
   declare description?: string;
+  declare label?: string;
   declare user: User;
   static User: BelongsTo;
 }
@@ -32,15 +33,21 @@ Notification.init(
       type: DataTypes.STRING,
       allowNull: true,
     },
-    labels: {
-      type: DataTypes.ARRAY(DataTypes.STRING),
-      defaultValue: [],
+    label: {
+      type: DataTypes.STRING,
       allowNull: true,
     },
   },
   {
     defaultScope: {
-      attributes: ['id', 'title', 'shortDescription', 'description', 'labels'],
+      attributes: [
+        'id',
+        'title',
+        'shortDescription',
+        'description',
+        'label',
+        ['created_at', 'timestamp'],
+      ],
     },
     sequelize: db,
     modelName: 'Notification',

@@ -14,7 +14,9 @@ const permit = (...roles: Role[]): RequestHandler => {
     if (
       !req.role ||
       (req.role && !roles.includes(req.role)) ||
-      (req.role === Role.USER && req.params.user_id !== req.userId.toString())
+      (req.role === Role.USER &&
+        req.params.user_id &&
+        req.params.user_id !== req.userId.toString())
     ) {
       res.status(ApiResponseCode.FORBIDDEN).send({
         message: 'You do not have permission to access this resource',

@@ -36,7 +36,7 @@ const notificationExists = async (
   { req }: Meta
 ): Promise<CustomValidator> => {
   const notification = await Notification.findByPk(notificationId, {
-    include: { model: User, as: 'user' },
+    include: { model: User.scope('limited'), as: 'user' },
   });
   if (notification === null || req.params.user_id !== notification.user.id) {
     return Promise.reject('Notification does not exist');
