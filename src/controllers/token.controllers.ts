@@ -9,7 +9,12 @@ const addDeviceToken = async (
 ) => {
   const { token } = req.body;
   try {
-    await req.user.update({ tokens: fn('array_append', col('tokens'), token) });
+    await req.user.update({
+      tokens:
+        req.user.tokens.indexOf(token) > -1
+          ? req.user.tokens
+          : fn('array_append', col('tokens'), token),
+    });
   } catch (err) {
     console.error(err);
     res.status(ApiResponseCode.SERVER_ERROR).send({ message: err });
