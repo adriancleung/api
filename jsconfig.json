@@ -12,5 +12,6 @@
       "@util/*": ["./common/util/*"],
       "@constants": ["./common/constants.js"]
     }
-  }
+  },
+  "exclude": ["./node_modules"]
 }

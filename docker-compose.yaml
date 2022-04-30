@@ -1,10 +1,28 @@
 version: '3'
 services:
   app:
+    depends_on:
+      - db
+      - redis
     build: .
     environment:
       PORT: 3000
       TZ: America/Edmonton
     ports:
-      - "3001:3000"
-      - "3443:3443"
+      - '3001:3000'
+      - '3443:3443'
+
+  db:
+    image: postgres:latest
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: test_password
+      POSTGRES_DB: pushie
+
+  redis:
+    image: redis:latest
+    restart: always
+    ports:
+      - 6379:6379

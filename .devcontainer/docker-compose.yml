@@ -1,25 +1,10 @@
 version: '3'
 services:
   app:
-    depends_on:
-      - swagger-ui
     env_file: .env
-    ports:
-      - "4000:4000"
-      - "4400:4400"
-      - "4500:4500"
-      - "8080:8080"
     volumes:
       - .:/data:cached
       - ~/.gitconfig:/root/.gitconfig
       - /var/run/docker.sock:/var/run/docker.sock 
     command: /bin/sh -c "while sleep 1000; do :; done"
 
-  swagger-ui:
-    image: swaggerapi/swagger-editor
-    environment: 
-      SWAGGER_FILE: /data/swagger-editor-template.yaml
-    ports:
-      - "8000:8080"
-    volumes:
-      - ./docs:/data:cached
