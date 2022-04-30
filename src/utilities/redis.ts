@@ -4,7 +4,7 @@ const env = process.env.NODE_ENV || 'development';
 
 let redis: Redis.Redis;
 
-if (env === 'production') {
+if (env === 'production' || env === 'test') {
   if (!process.env.REDIS_URL) {
     throw new Error('Production Redis url is not set');
   }

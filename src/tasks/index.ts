@@ -5,7 +5,10 @@ import path from 'path';
 class Tasks {
   static init = () => {
     console.info(`NODE_ENV: ${process.env.NODE_ENV}`);
-    if (process.env.NODE_ENV === 'development') {
+    if (
+      process.env.NODE_ENV === 'development' ||
+      process.env.NODE_ENV === 'test'
+    ) {
       console.info('Will not initialize tasks');
       return;
     }

@@ -6,7 +6,7 @@ const env = process.env.NODE_ENV || 'development';
 
 let sequelize: Sequelize;
 
-if (env === 'production') {
+if (env === 'production' || env === 'test') {
   if (!process.env.DATABASE_URL) {
     throw new Error('Production database url is not set');
   }
