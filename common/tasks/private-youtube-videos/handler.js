@@ -16,7 +16,7 @@ const endpoint = async () => {
       part: 'snippet',
       forMine: true,
       order: 'date',
-      q: 'SMW',
+      q: 'ECCC English Worship',
       type: 'video',
     });
   } catch (err) {

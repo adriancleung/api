@@ -10,7 +10,7 @@ const { AUTH_TYPES, SERVER_ERROR } = require('@constants');
 
 router.post(
   '/',
-  [checkAuthorization([AUTH_TYPES.JWT]), upload.any()],
+  [checkAuthorization([AUTH_TYPES.JWT, AUTH_TYPES.API]), upload.any()],
   (req, res) => {
     updateResume(req.files[0].buffer.toString('base64'))
       .then(results => res.status(results.statusCode).send(results.body))
