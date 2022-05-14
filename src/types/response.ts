@@ -7,6 +7,7 @@ export enum ApiResponseCode {
   UNAUTHORIZED = 401,
   FORBIDDEN = 403,
   RESOURCE_NOT_FOUND = 404,
+  GONE = 410,
   SERVER_ERROR = 500,
   SERVER_UNAVAILABLE = 503,
 }

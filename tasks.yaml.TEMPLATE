@@ -1,4 +1,0 @@
-tasks:
-  ping_status: # name of task
-    module: common.tasks.status.handler.endpoint # path to function call
-    schedule: '* * * * *'  # in cron format

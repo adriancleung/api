@@ -1,6 +1,7 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
 import { AuthType } from '../types/auth';
+import { ApiResponseCode } from '../types/response';
 import { Role } from '../types/role';
 const router = express.Router();
 
@@ -24,5 +25,11 @@ router.post(
   ],
   addAndSendUserNotification
 );
+
+router.post('/pushie/notify', (req: Request, res: Response) => {
+  res
+    .status(ApiResponseCode.GONE)
+    .send({ message: 'This endpoint has been moved to /notify.' });
+});
 
 export default router;

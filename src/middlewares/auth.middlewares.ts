@@ -65,9 +65,7 @@ const validateAuthorization = async (
         ];
         return true;
       } catch (err) {
-        res
-          .status(ApiResponseCode.UNAUTHORIZED)
-          .send({ message: 'Invalid token' });
+        res.status(ApiResponseCode.SUCCESS).send({ message: 'Invalid token' });
         return false;
       }
   }

@@ -1,9 +1,11 @@
 import express from 'express';
 import { body } from 'express-validator';
+import { AuthType } from '../types/auth';
 const router = express.Router();
 
 import { login, register, verify } from '../controllers/auth.controllers';
 
+import { authorization } from '../middlewares/auth.middlewares';
 import { isValidUser, validate } from '../middlewares/validator.middleware';
 
 router.post(
@@ -19,6 +21,6 @@ router.post(
   ]),
   register
 );
-router.post('/verify', verify);
+router.post('/verify', authorization(AuthType.JWT), verify);
 
 export default router;

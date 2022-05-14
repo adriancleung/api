@@ -19,10 +19,8 @@
   "dependencies": {
     "axios": "^0.21.1",
     "bcryptjs": "^2.4.3",
-    "body-parser": "^1.19.0",
     "chalk": "^2.4.2",
     "compression": "^1.7.4",
-    "console-stamp": "^3.0.0-rc4.2",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-rate-limit": "^5.2.3",
@@ -32,8 +30,6 @@
     "helmet": "^4.2.0",
     "ioredis": "^4.20.0",
     "jsonwebtoken": "^8.5.1",
-    "md5": "^2.3.0",
-    "module-alias": "^2.2.2",
     "moment": "^2.29.2",
     "morgan": "^1.10.0",
     "multer": "^1.4.4",
@@ -43,11 +39,7 @@
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.12.0-alpha.1",
     "serve-favicon": "^2.5.0",
-    "supertest": "^6.0.1",
-    "swagger-jsdoc": "^6.0.6",
-    "swagger-ui-express": "^4.1.6",
-    "uuid": "^8.3.0",
-    "yaml": "^1.10.0"
+    "uuid": "^8.3.0"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
@@ -65,14 +57,5 @@
     "nodemon": "^2.0.6",
     "sequelize-cli": "^6.3.0",
     "ts-node": "^10.7.0"
-  },
-  "_moduleAliases": {
-    "@root": ".",
-    "@app": "common/app",
-    "@auth": "common/auth",
-    "@db": "common/db",
-    "@tasks": "common/tasks",
-    "@util": "common/util",
-    "@constants": "common/constants.js"
   }
 }
