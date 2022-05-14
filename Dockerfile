@@ -9,6 +9,8 @@ RUN if [ -z "$IS_DEV_CONTAINER" ]; then \
 
 COPY . .
 
+RUN apt-get update && apt-get install -y build-essential python3 pkg-config libpixman-1-dev libcairo2-dev libpango1.0-dev libjpeg62-turbo-dev libgif-dev
+
 RUN npm ci
 
-CMD ["node", "app.js"]
+CMD ["npm", "start"]
