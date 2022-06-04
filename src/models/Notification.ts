@@ -48,6 +48,7 @@ Notification.init(
         'label',
         ['created_at', 'timestamp'],
       ],
+      order: [['created_at', 'DESC']],
     },
     sequelize: db,
     modelName: 'Notification',

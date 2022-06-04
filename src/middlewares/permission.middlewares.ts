@@ -13,7 +13,7 @@ const permit = (...roles: Role[]): RequestHandler => {
     }
     if (
       !req.role ||
-      (req.role && !roles.includes(req.role)) ||
+      (req.role !== Role.ADMIN && !roles.includes(req.role)) ||
       (req.role === Role.USER &&
         req.params.user_id &&
         req.params.user_id !== req.userId.toString())

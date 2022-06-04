@@ -4,6 +4,7 @@ import User from '../models/User';
 import {
   AuthenticatedRequest,
   NotificationRequest,
+  PaginationRequest,
   UserRequest,
 } from '../types/request';
 import { ApiResponseCode } from '../types/response';
@@ -78,11 +79,13 @@ const getUserNotification = async (
 };
 
 const getUserNotifications = async (
-  req: AuthenticatedRequest & UserRequest,
+  req: AuthenticatedRequest & UserRequest & PaginationRequest,
   res: Response
 ) => {
   const notifications = await req.user.getNotifications({
     include: { model: User.scope('limited'), as: 'user' },
+    limit: req.limit,
+    offset: req.offset,
   });
   res.status(ApiResponseCode.SUCCESS).send({ notifications: notifications });
 };
