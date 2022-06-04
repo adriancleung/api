@@ -1,10 +1,11 @@
 import express from 'express';
-import { body, param } from 'express-validator';
+import { body, param, query } from 'express-validator';
 import { AuthType } from '../types/auth';
 import { Role } from '../types/role';
 const router = express.Router({ mergeParams: true });
 
 import { authorization } from '../middlewares/auth.middlewares';
+import { paginate } from '../middlewares/pagination.middlewares';
 import { permit } from '../middlewares/permission.middlewares';
 import {
   notificationExists,
@@ -35,7 +36,12 @@ router.post(
 );
 router.get(
   '/',
-  [authorization(AuthType.JWT), permit(Role.USER, Role.ADMIN)],
+  [
+    authorization(AuthType.JWT),
+    permit(Role.USER, Role.ADMIN),
+    validate([query('size').isInt(), query('page').isInt()]),
+    paginate,
+  ],
   getUserNotifications
 );
 router.get(

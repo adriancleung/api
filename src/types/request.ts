@@ -19,6 +19,11 @@ export type NotificationRequest = UserRequest & {
   notification: Notification;
 };
 
+export type PaginationRequest = Request & {
+  offset: number;
+  limit: number;
+};
+
 export type UserRequest = Request & {
   user: User;
 };
