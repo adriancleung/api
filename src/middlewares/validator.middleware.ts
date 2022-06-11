@@ -8,6 +8,7 @@ import {
 import Mail from '../models/Mail';
 import Notification from '../models/Notification';
 import User from '../models/User';
+import { ApiResponseCode } from '../types/response';
 
 const isValidUser = async (
   email: string,
@@ -64,7 +65,7 @@ const validate = (validations: ValidationChain[]) => {
       return next();
     }
 
-    res.status(400).json({ errors: errors.array() });
+    res.status(ApiResponseCode.CLIENT_ERROR).json({ errors: errors.array() });
   };
 };
 

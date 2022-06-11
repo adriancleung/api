@@ -2,12 +2,14 @@ import express from 'express';
 import { query } from 'express-validator';
 import multer from 'multer';
 import { AuthType } from '../types/auth';
+import { Role } from '../types/role';
 const router = express.Router();
 
 import { getResume, updateResume } from '../controllers/resume.controllers';
 
 import { authorization } from '../middlewares/auth.middlewares';
 import { validate } from '../middlewares/validator.middleware';
+import { permit } from '../middlewares/permission.middlewares';
 
 router.get(
   '/',
@@ -19,7 +21,11 @@ router.get(
 );
 router.post(
   '/',
-  [authorization(AuthType.JWT, AuthType.API), multer().single('resume')],
+  [
+    authorization(AuthType.JWT, AuthType.API),
+    permit(Role.ADMIN),
+    multer().single('resume'),
+  ],
   updateResume
 );
 
