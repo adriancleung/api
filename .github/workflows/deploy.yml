@@ -53,6 +53,7 @@ jobs:
           script: |
             cd /app/api
             git pull
+            docker-compose up -d
             docker-compose restart
             # Login to registry
             # docker login -u ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }} -p ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }} registry.digitalocean.com
