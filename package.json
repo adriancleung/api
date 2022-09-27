@@ -55,7 +55,7 @@
     "@types/uuid": "^8.3.4",
     "firebase-tools": "^9.0.1",
     "nodemon": "^2.0.6",
-    "sequelize-cli": "^6.3.0",
+    "sequelize-cli": "^6.5.1",
     "ts-node": "^10.7.0"
   }
 }
