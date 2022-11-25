@@ -14,6 +14,7 @@ import {
 
 import {
   addUserNotification,
+  deleteMultipleUserNotifications,
   deleteUserNotification,
   editUserNotification,
   getUserNotification,
@@ -80,6 +81,18 @@ router.delete(
     ]),
   ],
   deleteUserNotification
+);
+router.delete(
+  '/',
+  [
+    authorization(AuthType.JWT),
+    permit(Role.USER, Role.ADMIN),
+    validate([
+      body('notifications').isArray(),
+      body('notifications.*').isUUID(),
+    ]),
+  ],
+  deleteMultipleUserNotifications
 );
 
 export default router;

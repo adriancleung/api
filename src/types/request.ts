@@ -27,3 +27,10 @@ export type PaginationRequest = Request & {
 export type UserRequest = Request & {
   user: User;
 };
+
+export enum RequestMethod {
+  GET = 'GET',
+  POST = 'POST',
+  PUT = 'PUT',
+  DELETE = 'DELETE'
+}

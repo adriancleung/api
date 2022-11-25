@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import db from '../db';
 import { Role } from '../types/role';
 import Notification from './Notification';
+import Permission from './Permission';
 
 class User extends Model {
   declare id: typeof uuidv4;
@@ -12,11 +13,17 @@ class User extends Model {
   declare tokens: string[];
   declare role: Role;
   declare notifications: Notification[];
+  declare permissions: Permission[];
   static Notification: HasMany;
+  static Permission: HasMany;
   declare addNotification: (notification: Notification) => Promise<void>;
   declare removeNotification: (notification: Notification) => Promise<void>;
   declare getNotifications: (options?: FindOptions) => Promise<Notification[]>;
   declare hasNotification: (notification: Notification) => Promise<boolean>;
+  declare addPermission: (permission: Permission) => Promise<void>;
+  declare removePermission: (permission: Permission) => Promise<void>;
+  declare getPermisions: (options?: FindOptions) => Promise<Permission[]>;
+  declare hasPermission: (permission: Permission) => Promise<boolean>;
 }
 
 User.init(
@@ -72,5 +79,10 @@ Notification.User = Notification.belongsTo(User, {
   as: 'user',
   foreignKey: 'user_id',
 });
+User.Permission = User.hasMany(Permission);
+Permission.User = Permission.belongsTo(User, {
+  as: 'user',
+  foreignKey: 'user_id',
+})
 
 export default User;
