@@ -4,9 +4,7 @@ import chalk from 'chalk';
 
 morgan.token('status', (req, res) => {
   const status = (
-    typeof res.headersSent !== `boolean`
-      ? Boolean(res._header)
-      : res.headersSent
+    typeof res.headersSent !== `boolean` ? false : res.headersSent
   )
     ? res.statusCode
     : undefined;
@@ -28,24 +26,22 @@ morgan.token('date', (req, res) => {
   return chalk`{grey [${moment().format('ddd MMM DD YYYY HH:mm:ssZZ')}]}`;
 });
 
-morgan.token('log_level', (req, res) => {
+morgan.token('log_level', (_req, res): any => {
   const status = (
-    typeof res.headersSent !== 'boolean'
-      ? Boolean(res._header)
-      : res.headersSent
+    typeof res.headersSent !== 'boolean' ? false : res.headersSent
   )
     ? res.statusCode
     : undefined;
 
   const color =
     status >= 500
-      ? chalk`{red [API]  }`
+      ? chalk.red('[API] ')
       : status >= 400
-      ? chalk`{yellow [API]  }`
+      ? chalk.yellow('[API] ')
       : status >= 300
-      ? chalk`{cyan [API]  }`
+      ? chalk.cyan('[API] ')
       : status >= 200
-      ? chalk`{green [API]  }`
+      ? chalk.green('[API] ')
       : 0;
   return color;
 });

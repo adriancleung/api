@@ -17,7 +17,7 @@ const getResume = async (req: Request, res: Response) => {
       useSystemFonts: false,
       viewportScale: 2.0,
       outputFileMask: './',
-      pages: [1],
+      pagesToProcess: [1],
     });
     res.send(image[0].content);
   } else {
