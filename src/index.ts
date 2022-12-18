@@ -1,33 +1,59 @@
-import cluster from 'cluster';
+import express from 'express';
+import helmet from 'helmet';
+import cors from 'cors';
+import favicon from 'serve-favicon';
+import compression from 'compression';
 
 import db from './db';
 db.sync({ alter: true });
 
-// import Tasks from './tasks';
-// Tasks.init();
+import Tasks from './tasks';
+Tasks.init();
 
-import { startApp } from './app';
+import { CORS_OPTIONS, RATE_LIMITER } from './constants';
 
-if (cluster.isPrimary && process.env.NODE_ENV !== 'development') {
-  const WORKERS = process.env.WEB_CONCURRENCY || 1;
+import { logging } from './middlewares/logging.middlewares';
 
-  for (let i = 0; i < WORKERS; i++) {
-    cluster.fork();
-  }
+import about from './routes/about.routes';
+import auth from './routes/auth.routes';
+import mails from './routes/mail.routes';
+import notify from './routes/notify.routes';
+import resume from './routes/resume.routes';
+import users from './routes/user.routes';
 
-  cluster.on('exit', (worker, code) => {
-    if (code !== 0 && !worker.exitedAfterDisconnect) {
-      console.log(
-        `Worker ${worker.process.pid} crashed. Starting a new worker.`
-      );
-      const nw = cluster.fork();
-      console.log(
-        `Worker ${nw.process.pid} will replace worker ${worker.process.pid}`
-      );
-    }
-  });
+const app = express();
 
-  console.log(`Master PID: ${process.pid} Workers: ${WORKERS}`);
-} else {
-  startApp();
-}
+app.use(helmet());
+app.use(RATE_LIMITER);
+app.use(compression());
+app.use(cors(CORS_OPTIONS));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(favicon('favicon.ico'));
+app.use(logging);
+
+app.use((_req, res, next) => {
+  res.setHeader('X-Powered-By', 'Mostly coffee');
+  next();
+});
+
+app.use('/about', about);
+app.use(auth);
+app.use('/mails', mails);
+app.use(notify);
+app.use('/users', users);
+app.use('/resume', resume);
+
+app.get('/', (_req, res) => {
+  res.redirect(301, 'https://adrianleung.dev');
+});
+
+app.get('/pushie', (_req, res) => {
+  res.redirect(301, 'https://adrianleung.dev/pushie');
+});
+
+const port = process.env.PORT || 3001;
+
+app.listen(port, () => {
+  console.info('Your app is listening on port ' + port);
+});
