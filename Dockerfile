@@ -1,4 +1,4 @@
-FROM node:buster-slim
+FROM node:18-buster-slim
 
 RUN if [ -z "$IS_DEV_CONTAINER" ]; then \
   # This line is to prevent the stupid openjdk-11 error
