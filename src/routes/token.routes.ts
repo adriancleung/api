@@ -1,7 +1,7 @@
 import express from 'express';
 import { body } from 'express-validator';
 import { AuthType } from '../types/auth';
-import { Role } from '../types/role';
+import { RoleType } from '../types/role';
 const router = express.Router({ mergeParams: true });
 
 import { authorization } from '../middlewares/auth.middlewares';
@@ -14,7 +14,7 @@ router.post(
   '/',
   [
     authorization(AuthType.JWT),
-    permit(Role.USER),
+    permit(RoleType.USER),
     validate([body('token').isString()]),
   ],
   addDeviceToken

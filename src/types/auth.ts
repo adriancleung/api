@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { Role } from './role';
+import { RoleType } from './role';
 
 export enum AuthType {
   JWT = 'authorization',
@@ -9,5 +9,5 @@ export enum AuthType {
 export interface JwtPayload {
   userId: typeof uuidv4;
   email: string;
-  role: Role;
+  role: RoleType;
 }

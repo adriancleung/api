@@ -1,7 +1,7 @@
 import express from 'express';
 import { body, param, query } from 'express-validator';
 import { AuthType } from '../types/auth';
-import { Role } from '../types/role';
+import { RoleType } from '../types/role';
 const router = express.Router({ mergeParams: true });
 
 import { authorization } from '../middlewares/auth.middlewares';
@@ -24,7 +24,7 @@ router.post(
   '/',
   [
     authorization(AuthType.API),
-    permit(Role.USER, Role.ADMIN),
+    permit(RoleType.USER, RoleType.ADMIN),
     validate([
       body('title').isString(),
       body('shortDescription').isString(),
@@ -38,7 +38,7 @@ router.get(
   '/',
   [
     authorization(AuthType.JWT),
-    permit(Role.USER, Role.ADMIN),
+    permit(RoleType.USER, RoleType.ADMIN),
     validate([query('size').isInt(), query('page').isInt()]),
     paginate,
   ],
@@ -48,7 +48,7 @@ router.get(
   '/:notification_id',
   [
     authorization(AuthType.JWT),
-    permit(Role.USER, Role.ADMIN),
+    permit(RoleType.USER, RoleType.ADMIN),
     validate([
       param('notification_id').isUUID().bail().custom(notificationExists),
     ]),
@@ -59,7 +59,7 @@ router.post(
   '/:notification_id',
   [
     authorization(AuthType.JWT),
-    permit(Role.USER, Role.ADMIN),
+    permit(RoleType.USER, RoleType.ADMIN),
     validate([
       param('notification_id').isUUID().bail().custom(notificationExists),
       body('title').isString().optional(),
@@ -74,7 +74,7 @@ router.delete(
   '/:notification_id',
   [
     authorization(AuthType.JWT),
-    permit(Role.USER, Role.ADMIN),
+    permit(RoleType.USER, RoleType.ADMIN),
     validate([
       param('notification_id').isUUID().bail().custom(notificationExists),
     ]),

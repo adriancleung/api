@@ -20,13 +20,21 @@ const authorization = (...authType: AuthType[]): RequestHandler => {
 
       if (Array.isArray(authValue)) {
         res
-          .send(ApiResponseCode.CLIENT_ERROR)
+          .status(ApiResponseCode.CLIENT_ERROR)
           .send({ message: 'Authorization invalid' });
         return;
       }
 
-      if (await validateAuthorization(type, authValue, req, res)) {
+      const { validAuth, statusCode, message } = await validateAuthorization(
+        type,
+        authValue,
+        req
+      );
+
+      if (validAuth) {
         next();
+      } else {
+        res.status(statusCode).send({ message });
       }
       return;
     }
@@ -39,20 +47,28 @@ const authorization = (...authType: AuthType[]): RequestHandler => {
 const validateAuthorization = async (
   authType: AuthType,
   authValue: string,
-  req: AuthenticatedRequest,
-  res: Response
-): Promise<boolean> => {
+  req: AuthenticatedRequest
+): Promise<{
+  validAuth: Boolean;
+  statusCode: ApiResponseCode;
+  message: String;
+}> => {
   switch (authType) {
     case AuthType.API:
       const user = await User.findOne({ where: { apiKey: authValue } });
       if (user === null) {
-        res
-          .send(ApiResponseCode.CLIENT_ERROR)
-          .send({ message: 'Authorization invalid' });
-        return false;
+        return {
+          validAuth: false,
+          statusCode: ApiResponseCode.CLIENT_ERROR,
+          message: 'Authorization invalid',
+        };
       }
-      [req.userId, req.email, req.role] = [user.id, user.email, user.role];
-      return true;
+      [req.userId, req.email, req.role] = [user.id, user.email, user.role.type];
+      return {
+        validAuth: true,
+        statusCode: ApiResponseCode.SUCCESS,
+        message: 'Authorized',
+      };
 
     case AuthType.JWT:
       try {
@@ -63,10 +79,17 @@ const validateAuthorization = async (
           user.email,
           user.role,
         ];
-        return true;
+        return {
+          validAuth: true,
+          statusCode: ApiResponseCode.SUCCESS,
+          message: 'Authorized',
+        };
       } catch (err) {
-        res.status(ApiResponseCode.SUCCESS).send({ message: 'Invalid token' });
-        return false;
+        return {
+          validAuth: false,
+          statusCode: ApiResponseCode.UNAUTHORIZED,
+          message: 'Invalid token',
+        };
       }
   }
 };

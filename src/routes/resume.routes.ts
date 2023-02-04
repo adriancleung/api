@@ -2,7 +2,7 @@ import express from 'express';
 import { query } from 'express-validator';
 import multer from 'multer';
 import { AuthType } from '../types/auth';
-import { Role } from '../types/role';
+import { RoleType } from '../types/role';
 const router = express.Router();
 
 import { getResume, updateResume } from '../controllers/resume.controllers';
@@ -23,7 +23,7 @@ router.post(
   '/',
   [
     authorization(AuthType.JWT, AuthType.API),
-    permit(Role.ADMIN),
+    permit(RoleType.ADMIN),
     multer().single('resume'),
   ],
   updateResume

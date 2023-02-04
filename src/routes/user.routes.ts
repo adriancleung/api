@@ -1,7 +1,7 @@
 import express from 'express';
 import { body, param } from 'express-validator';
 import { AuthType } from '../types/auth';
-import { Role } from '../types/role';
+import { RoleType } from '../types/role';
 const router = express.Router();
 
 import apis from './api.routes';
@@ -39,7 +39,7 @@ router.get(
   '/:user_id',
   [
     authorization(AuthType.JWT),
-    permit(Role.USER, Role.ADMIN),
+    permit(RoleType.USER, RoleType.ADMIN),
     validate([param('user_id').isUUID().bail().custom(userExists)]),
   ],
   getUserProfile
@@ -48,7 +48,7 @@ router.post(
   '/:user_id',
   [
     authorization(AuthType.JWT),
-    permit(Role.USER, Role.ADMIN),
+    permit(RoleType.USER, RoleType.ADMIN),
     validate([
       param('user_id').isUUID().bail().custom(userExists),
       body('email').isEmail(),
@@ -60,12 +60,16 @@ router.delete(
   '/:user_id',
   [
     authorization(AuthType.JWT),
-    permit(Role.ADMIN),
+    permit(RoleType.ADMIN),
     validate([param('user_id').isUUID().bail().custom(userExists)]),
   ],
   deleteUserProfile
 );
 
-router.get('/', [authorization(AuthType.JWT), permit(Role.ADMIN)], getAllUsers);
+router.get(
+  '/',
+  [authorization(AuthType.JWT), permit(RoleType.ADMIN)],
+  getAllUsers
+);
 
 export default router;

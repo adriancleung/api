@@ -3,12 +3,12 @@ import { v4 as uuidv4 } from 'uuid';
 import Mail from '../models/Mail';
 import Notification from '../models/Notification';
 import User from '../models/User';
-import { Role } from './role';
+import { RoleType } from './role';
 
 export type AuthenticatedRequest = Request & {
   userId: typeof uuidv4;
   email: string;
-  role: Role;
+  role: RoleType;
 };
 
 export type MailRequest = Request & {
@@ -27,3 +27,10 @@ export type PaginationRequest = Request & {
 export type UserRequest = Request & {
   user: User;
 };
+
+export enum RequestMethod {
+  GET = 'GET',
+  POST = 'POST',
+  PUT = 'PUT',
+  DELETE = 'DELETE',
+}

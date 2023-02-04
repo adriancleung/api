@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { Role } from './role';
+import { RoleType } from './role';
 
 export enum ApiResponseCode {
   SUCCESS = 200,
@@ -18,7 +18,7 @@ export type ApiResponse = {
     userId?: typeof uuidv4;
     email?: string;
     accessToken?: string;
-    role?: Role;
+    role?: RoleType;
     message: string;
   };
 };

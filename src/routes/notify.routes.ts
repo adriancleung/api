@@ -2,7 +2,7 @@ import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
 import { AuthType } from '../types/auth';
 import { ApiResponseCode } from '../types/response';
-import { Role } from '../types/role';
+import { RoleType } from '../types/role';
 const router = express.Router();
 
 import { authorization } from '../middlewares/auth.middlewares';
@@ -15,7 +15,7 @@ router.post(
   '/notify',
   [
     authorization(AuthType.API),
-    permit(Role.USER),
+    permit(RoleType.USER),
     validate([
       body('title').isString(),
       body('shortDescription').isString(),

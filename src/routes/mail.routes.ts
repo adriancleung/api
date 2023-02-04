@@ -1,7 +1,7 @@
 import express from 'express';
 import { body, param } from 'express-validator';
 import { AuthType } from '../types/auth';
-import { Role } from '../types/role';
+import { RoleType } from '../types/role';
 const router = express.Router();
 
 import { authorization } from '../middlewares/auth.middlewares';
@@ -18,12 +18,16 @@ router.delete(
   '/:mail_id',
   [
     authorization(AuthType.JWT),
-    permit(Role.ADMIN),
+    permit(RoleType.ADMIN),
     validate([param('mail_id').isUUID().bail().custom(mailExists)]),
   ],
   deleteMail
 );
-router.get('/', [authorization(AuthType.JWT), permit(Role.ADMIN)], getAllMails);
+router.get(
+  '/',
+  [authorization(AuthType.JWT), permit(RoleType.ADMIN)],
+  getAllMails
+);
 router.post(
   '/',
   [

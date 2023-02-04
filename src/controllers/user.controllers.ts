@@ -1,4 +1,5 @@
 import { Response } from 'express';
+import Role from '../models/Role';
 import User from '../models/User';
 import { AuthenticatedRequest, UserRequest } from '../types/request';
 import { ApiResponseCode } from '../types/response';
@@ -32,7 +33,9 @@ const editUserProfile = async (
 };
 
 const getAllUsers = async (req: AuthenticatedRequest, res: Response) => {
-  const users = await User.unscoped().findAll();
+  const users = await User.unscoped().findAll({
+    include: [{ model: Role, as: 'role' }],
+  });
   res.status(ApiResponseCode.SUCCESS).send(users);
 };
 

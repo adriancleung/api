@@ -4,6 +4,8 @@ import { v4 as uuidv4 } from 'uuid';
 import User from '../models/User';
 import { ApiResponse, ApiResponseCode } from '../types/response';
 import { encode } from '../utilities/encode';
+import { createOrGetRole } from './role.handlers';
+import { RoleType } from '../types/role';
 
 const generateApiKey = async () => {
   while (true) {
@@ -37,8 +39,9 @@ const loginUser = async (
   }
   if (bcrypt.compareSync(password, user.passwordHash)) {
     const token = jwt.sign(
-      { userId: user.id, email: user.email, role: user.role },
-      process.env.JWT_SECRET
+      { userId: user.id, email: user.email, role: user.role.type },
+      process.env.JWT_SECRET,
+      { expiresIn: '7d' }
     );
     return {
       statusCode: ApiResponseCode.SUCCESS,
@@ -46,7 +49,7 @@ const loginUser = async (
         userId: user.id,
         email: user.email,
         accessToken: token,
-        role: user.role,
+        role: user.role.type,
         message: 'Authorized',
       },
     };
@@ -64,11 +67,13 @@ const registerUser = async (
 ): Promise<ApiResponse> => {
   const passwordHash = bcrypt.hashSync(password, 10);
   try {
-    await User.create({
+    const role = await createOrGetRole(RoleType.USER);
+    const user = await User.create({
       email: email,
       passwordHash: passwordHash,
       apiKey: await generateApiKey(),
     });
+    await role.addUser(user);
   } catch (err) {
     console.error(err);
     return {
