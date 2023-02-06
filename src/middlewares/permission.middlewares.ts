@@ -46,4 +46,10 @@ const permitOnly = (...userIds: User['id'][]): RequestHandler => {
   };
 };
 
+const checkPermissions = (): RequestHandler => {
+  return (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+    
+  };
+};
+
 export { permit, permitOnly };

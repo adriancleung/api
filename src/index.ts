@@ -18,6 +18,7 @@ import about from './routes/about.routes';
 import auth from './routes/auth.routes';
 import mails from './routes/mail.routes';
 import notify from './routes/notify.routes';
+import permissions from './routes/permission.routes';
 import resume from './routes/resume.routes';
 import users from './routes/user.routes';
 
@@ -41,6 +42,7 @@ app.use('/about', about);
 app.use(auth);
 app.use('/mails', mails);
 app.use(notify);
+app.use('/permissions', permissions);
 app.use('/users', users);
 app.use('/resume', resume);
 
@@ -57,3 +59,5 @@ const port = process.env.PORT || 3001;
 app.listen(port, () => {
   console.info('Your app is listening on port ' + port);
 });
+
+export default app;

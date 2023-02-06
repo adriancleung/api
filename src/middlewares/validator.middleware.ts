@@ -5,10 +5,42 @@ import {
   CustomValidator,
   Meta,
 } from 'express-validator';
+import app from '..';
 import Mail from '../models/Mail';
 import Notification from '../models/Notification';
 import User from '../models/User';
 import { ApiResponseCode } from '../types/response';
+
+const split = thing => {
+  if (typeof thing === 'string') {
+    return thing.split('/');
+  } else if (thing.fast_slash) {
+    return '';
+  } else {
+    var match = thing
+      .toString()
+      .replace('\\/?', '')
+      .replace('(?=\\/|$)', '$')
+      .match(/^\/\^((?:\\[.*+?^${}()|[\]\\\/]|[^.*+?^${}()|[\]\\\/])*)\$\//);
+    return match
+      ? match[1].replace(/\\(.)/g, '$1').split('/')
+      : '<complex:' + thing.toString() + '>';
+  }
+};
+
+const isValidRoute = async (
+  routeToCheck: string,
+  { req }: Meta
+): Promise<CustomValidator> => {
+
+  app._router.stack.forEach((middleware) => {
+    if (middleware.route) {
+      const route = split(middleware.regexp);
+    }
+  })
+
+  return;
+};
 
 const isValidUser = async (
   email: string,
@@ -69,4 +101,11 @@ const validate = (validations: ValidationChain[]) => {
   };
 };
 
-export { isValidUser, mailExists, notificationExists, userExists, validate };
+export {
+  isValidRoute,
+  isValidUser,
+  mailExists,
+  notificationExists,
+  userExists,
+  validate,
+};
