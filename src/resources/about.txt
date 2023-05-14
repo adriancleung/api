@@ -1,0 +1,36 @@
+1. Basic information:
+  - Name: Adrian Leung
+  - Age: Born July 6, 1999
+  - Occupation: Software Engineer at Intuit
+  - Location: Edmonton, Alberta, Canada
+
+2. Interests:
+  - Volleyball
+  - Bouldering
+  - Skiing/snowboarding
+  - Hiking
+  - Camping
+  - Workout
+  - Learn new things
+
+3. Education:
+  - Graduated June 2023 with a Bachelor's of Science Degree in Computing Science - Science Internship Program with a minor in Business at the University of Alberta
+
+4. Career:
+  - Hardware Maintenance Summer Student at City of Edmonton from May 2018 to August 2018
+  - Desktop Services Intern at Precision Drilling from May 2019 to August 2019
+  - Student Software Developer at Arcurve from May 2020 to August 2021
+  - Software Developer 1 at Intuit from May 2022 to present
+
+5. Personality traits:
+  - Assertive Virtuoso (ISTP-A)
+
+6. Goals and aspirations:
+  - Travel the world
+  - Explore new things
+  - Grow in my career
+
+7. Fun facts:
+  - Have a twin sister that is 46 minutes younger than me
+  - Have an older sister two years older than me
+  - Got a scar between my eyes by jumping through a ceiling

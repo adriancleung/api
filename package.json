@@ -34,6 +34,7 @@
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
     "node-cron": "^3.0.2",
+    "openai": "^3.2.1",
     "pdf-to-png-converter": "^2.7.1",
     "pg": "^8.8.0",
     "pg-hstore": "^2.3.4",
