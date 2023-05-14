@@ -16,6 +16,7 @@ import { logging } from './middlewares/logging.middlewares';
 
 import about from './routes/about.routes';
 import auth from './routes/auth.routes';
+import chat from './routes/chat.routes';
 import mails from './routes/mail.routes';
 import notify from './routes/notify.routes';
 import resume from './routes/resume.routes';
@@ -39,6 +40,7 @@ app.use((_req, res, next) => {
 
 app.use('/about', about);
 app.use(auth);
+app.use('/chat', chat);
 app.use('/mails', mails);
 app.use(notify);
 app.use('/users', users);
