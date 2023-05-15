@@ -3,6 +3,12 @@
   - Age: Born July 6, 1999
   - Occupation: Software Engineer at Intuit
   - Location: Edmonton, Alberta, Canada
+  - Email: contact@adrianleung.dev or adrian.leung@ualberta.ca
+  - Phone number: 7809017155 (mobile)
+  - LinkedIn: https://www.linkedin.com/in/adriancleung
+  - GitHub: https://github.com/adriancleung
+  - Instagram: @adriancleung
+  - Twitter: @adriancleung
 
 2. Interests:
   - Volleyball

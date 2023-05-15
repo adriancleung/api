@@ -10,7 +10,9 @@ const configuration = new Configuration({
 });
 const openai = new OpenAIApi(configuration);
 
-const file = readFileSync(resolve(__dirname, '../resources/about.txt')).toString('utf8');
+const file = readFileSync(
+  resolve(__dirname, '../resources/about.txt')
+).toString('utf8');
 
 const getChatResponse = async (req: Request, res: Response) => {
   const { content } = req.body;
@@ -26,7 +28,7 @@ const getChatResponse = async (req: Request, res: Response) => {
       ],
     });
     const response = completion.data.choices[0].message.content;
-    res.status(ApiResponseCode.SUCCESS).send(response);
+    res.status(ApiResponseCode.SUCCESS).send({ message: response });
   } catch (err) {
     res.sendStatus(ApiResponseCode.SERVER_ERROR);
   }
