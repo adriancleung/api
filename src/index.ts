@@ -28,7 +28,7 @@ app.use(
   helmet({
     contentSecurityPolicy: {
       directives: {
-        frameSrc: ['self', 'adrianleung.dev'],
+        frameAncestors: ['self', '*.adrianleung.dev'],
       },
     },
   })
