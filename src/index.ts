@@ -24,7 +24,15 @@ import users from './routes/user.routes';
 
 const app = express();
 
-app.use(helmet());
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        frameSrc: ['self', 'adrianleung.dev'],
+      },
+    },
+  })
+);
 app.use(RATE_LIMITER);
 app.use(compression());
 app.use(cors(CORS_OPTIONS));
